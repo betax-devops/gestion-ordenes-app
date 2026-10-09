@@ -140,31 +140,20 @@ ORDENES = "ordenes.csv"
 df_orden = cargar_csv_desde_drive(ORDENES)
 
 # --- RENOMBRAR COLUMNAS ---
-columnas_renombrar = {}
-if 'Appointment Number' in df_orden.columns:
-    columnas_renombrar['Appointment Numbre'] = 'Cita'
-if 'ID Técnico Telecom' in df_orden.columns:
-    columnas_renombrar['ID Técnico Telecom'] = 'Tecnico'
-if 'Address' in df_orden.columns:
-    columnas_renombrar['Address'] = 'Direccion'
-if 'Status' in df_orden.columns:
-    columnas_renombrar['Status'] = 'Estado'
-if 'Internal SLR Geolocation (Latitude)' in df_orden.columns:
-    columnas_renombrar['Internal SLR Geolocation (Latitude)'] = 'Latidud'
-if 'Internal SLR Geolocation (Longitude)' in df_orden.columns:
-    columnas_renombrar['Internal SLR Geolocation (Longitude)'] = 'Longitud'
-if 'Record Type' in df_orden.columns:
-    columnas_renombrar['Record Type'] = 'Tipo de Trabajo'
-if 'Internal SLR Geolocation (Longitude)' in df_orden.columns:
-    columnas_renombrar['Internal SLR Geolocation (Longitude)'] = 'Longitud'
-if 'Duration' in df_orden.columns:
-    columnas_renombrar['Duration'] = 'Duracion'
-if 'Arrival Window Start' in df_orden.columns:
-    columnas_renombrar['Arrival Window Start'] = 'Fecha Inicio'
+columnas_renombrar = {
+    'Appointment Number': 'Cita',
+    'ID Técnico Telecom': 'Técnico',
+    'Address': 'Dirección',
+    'Status': 'Estado',
+    'Internal SLR Geolocation (Latitude)': 'Latitud',
+    'Internal SLR Geolocation (Longitude)': 'Longitud',
+    'Record Type': 'Tipo de Trabajo',
+    'Duration': 'Duración',
+    'Arrival Window Start': 'Fecha Inicio',
+}
 
-
-if columnas_renombrar:
-    df_orden = df_orden.rename(columns=columnas_renombrar)
+# Pandas ignora automáticamente las columnas que no existen en el DataFrame
+df_orden = df_orden.rename(columns=columnas_renombrar)
 
 
 # --- MUESTRA DE DATOS EN PANTALLA ---
