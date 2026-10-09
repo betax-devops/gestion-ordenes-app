@@ -133,13 +133,13 @@ def cargar_csv_desde_drive(file_name):
 
 
 # --- PANEL PRINCIPAL ---
-st.title("📊 Órdenes de Trabajo")
+st.title("💾 Carga de Ordenes de Trabajo")
 
+# --- CARGA DE DATOS ---
 ORDENES = "ordenes.csv"
-
-# Cargar datos desde Google Drive
 df_orden = cargar_csv_desde_drive(ORDENES)
 
+# --- MUESTRA DE DATOS EN PANTALLA ---
 if df_orden is not None:
     st.write(f"Total de órdenes cargadas: **{len(df_orden)}**")
     st.dataframe(df_orden, use_container_width=True)
