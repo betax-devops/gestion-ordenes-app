@@ -139,6 +139,31 @@ st.title("💾 Carga de Ordenes de Trabajo")
 ORDENES = "ordenes.csv"
 df_orden = cargar_csv_desde_drive(ORDENES)
 
+# --- RENOMBRAR COLUMNAS ---
+columnas_renombrar = {}
+if 'Appointment Numbre' in df_orden.columns:
+    columnas_renombrar['Appointment Numbre'] = 'Cita'
+elif 'ID Técnico Telecom' in df_orden.columns:
+    columnas_renombrar['ID Técnico Telecom'] = 'Tecnico'
+elif 'Address' in df_orden.columns:
+    columnas_renombrar['Address'] = 'Direccion'
+elif 'Status' in df_orden.columns:
+    columnas_renombrar['Status'] = 'Estado'
+elif 'Internal SLR Geolocation (Latitude)' in df_orden.columns:
+    columnas_renombrar['Internal SLR Geolocation (Latitude)'] = 'Latidud'
+elif 'Internal SLR Geolocation (Longitude)' in df_orden.columns:
+    columnas_renombrar['Internal SLR Geolocation (Longitude)'] = 'Longitud'
+elif 'Record Type' in df_orden.columns:
+    columnas_renombrar['Record Type'] = 'Tipo de Trabajo'
+elif 'Internal SLR Geolocation (Longitude)' in df_orden.columns:
+    columnas_renombrar['Internal SLR Geolocation (Longitude)'] = 'Longitud'
+elif 'Duration' in df_orden.columns:
+    columnas_renombrar['Duration'] = 'Duracion'
+elif 'Arrival Window Start' in df_orden.columns:
+    columnas_renombrar['Arrival Window Start'] = 'Fecha Inicio'
+
+
+
 # --- MUESTRA DE DATOS EN PANTALLA ---
 if df_orden is not None:
     st.write(f"Total de órdenes cargadas: **{len(df_orden)}**")
