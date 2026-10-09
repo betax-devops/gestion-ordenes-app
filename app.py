@@ -149,6 +149,6 @@ st.title("📊 Ordenes de Trabajo")
 ORDENES = "ordenes.csv"
 
 # Cargar datos desde Google Drive
-df_orden = descargar_csv(ORDENES)
+df_orden = cargar_excel_desde_drive(ORDENES)
 
 st.dataframe(df_orden, use_container_width=True)
