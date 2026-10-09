@@ -48,48 +48,18 @@ if not verificar_password():
 
 
 # --- FUNCIÓN PARA DESCARGAR Y CARGAR EXCEL DESDE GOOGLE DRIVE ---
-@st.cache_data(ttl=300)  # Guarda en caché durante 5 minutos
-def cargar_excel_desde_drive(nombre_archivo):
-    # 1. Autenticación vía Service Account en Secrets
-    creds = service_account.Credentials.from_service_account_info(
-        st.secrets["gcp_service_account"],
-        scopes=["https://www.googleapis.com/auth/drive.readonly"],
-    )
-    service = build("drive", "v3", credentials=creds)
 
-    # 2. Buscar archivo en Google Drive por nombre
-    query = f"name = '{nombre_archivo}' and trashed = false"
-    results = service.files().list(q=query, fields="files(id, name)").execute()
-    items = results.get("files", [])
-
-    if not items:
-        st.error(f"No se encontró el archivo '{nombre_archivo}' en Google Drive.")
-        return None
-
-    file_id = items[0]["id"]
-
-    # 3. Descargar el archivo Excel a la memoria
-    request = service.files().get_media(fileId=file_id)
-    file_stream = io.BytesIO()
-    downloader = MediaIoBaseDownload(file_stream, request)
-
-    done = False
-    while not done:
-        _, done = downloader.next_chunk()
-
-    file_stream.seek(0)
-
-    # 4. Leer el archivo Excel usando pandas y openpyxl
-    return pd.read_csv(file_stream, engine="openpyxl")
 
 # --- FUNCIÓN PARA DESCARGAR Y CARGAR CSV DESDE GOOGLE DRIVE ---
 def descargar_csv(service, file_name):
+    # 1. Intentar listar el archivo en Google Drive
     try:
         results = service.files().list(
             q=f"name = '{file_name}' and trashed = false",
             fields="files(id, name)"
         ).execute()
     except Exception:
+        # Reintentar obteniendo un nuevo servicio si el token/sesión expiró
         service = obtener_servicio_drive()
         results = service.files().list(
             q=f"name = '{file_name}' and trashed = false",
@@ -102,19 +72,24 @@ def descargar_csv(service, file_name):
         return None, None
 
     file_id = items[0]['id']
+
+    # 2. Descargar el archivo a la memoria
     request = service.files().get_media(fileId=file_id)
     fh = io.BytesIO()
     downloader = MediaIoBaseDownload(fh, request)
     done = False
+    
     while not done:
         _, done = downloader.next_chunk()
+        
     fh.seek(0)
-    
-    # Intentar combinaciones de codificación y delimitador
-    encodings = ['utf-8', 'latin1', 'utf-8-sig', 'cp1252']
+
+    # 3. Intentar combinaciones de codificación y delimitador
+    encodings = ['utf-8', 'utf-8-sig', 'latin1', 'cp1252']
     separators = [';', ',', '\t']
     
     df = None
+
     for enc in encodings:
         for sep in separators:
             try:
@@ -123,22 +98,30 @@ def descargar_csv(service, file_name):
                     fh, 
                     encoding=enc, 
                     sep=sep, 
-                    on_bad_lines='skip',  # Salta filas corruptas o inconsistentes
+                    on_bad_lines='skip', 
                     engine='python'
                 )
-                # Validar que realmente haya separado en múltiples columnas (no todo en 1 columna)
-                if len(df_temp.columns) > 1:
-                    df = df_temp
-                    break
+                
+                # Si logró parsear al menos 1 columna y filas válidas, lo consideramos correcto
+                if len(df_temp.columns) >= 1:
+                    # Preferimos separadores que dividan en más de 1 columna si el dataset es multivariable
+                    if len(df_temp.columns) > 1:
+                        df = df_temp
+                        break
+                    elif df is None:
+                        df = df_temp # Guardar como fallback por si realmente era de 1 columna
             except Exception:
                 continue
-        if df is not None:
+        if df is not None and len(df.columns) > 1:
             break
 
-    # Si falló la detección multicolumna, intento final básico
+    # 4. Intento final básico si todos los intentos anteriores fallaron
     if df is None:
-        fh.seek(0)
-        df = pd.read_csv(fh, encoding='latin1', on_bad_lines='skip', engine='python')
+        try:
+            fh.seek(0)
+            df = pd.read_csv(fh, encoding='latin1', on_bad_lines='skip', engine='python')
+        except Exception:
+            return None, file_id
 
     return df, file_id
 
