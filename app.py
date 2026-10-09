@@ -47,33 +47,41 @@ if not verificar_password():
     st.stop()
 
 
-# --- FUNCIÓN PARA DESCARGAR Y CARGAR EXCEL DESDE GOOGLE DRIVE ---
+# --- SERVICIO GOOGLE DRIVE ---
+def obtener_servicio_drive():
+    """Crea la conexión cliente con Google Drive API usando Service Account."""
+    creds = service_account.Credentials.from_service_account_info(
+        st.secrets["gcp_service_account"],
+        scopes=["https://www.googleapis.com/auth/drive.readonly"],
+    )
+    return build("drive", "v3", credentials=creds)
 
 
 # --- FUNCIÓN PARA DESCARGAR Y CARGAR CSV DESDE GOOGLE DRIVE ---
-def descargar_csv(service, file_name):
-    # 1. Intentar listar el archivo en Google Drive
+@st.cache_data(ttl=300)  # Caché de 5 minutos
+def cargar_csv_desde_drive(file_name):
+    """Busca y descarga un archivo CSV desde Google Drive en memoria."""
+    service = obtener_servicio_drive()
+
+    # 1. Buscar archivo por nombre
     try:
         results = service.files().list(
             q=f"name = '{file_name}' and trashed = false",
             fields="files(id, name)"
         ).execute()
-    except Exception:
-        # Reintentar obteniendo un nuevo servicio si el token/sesión expiró
-        service = obtener_servicio_drive()
-        results = service.files().list(
-            q=f"name = '{file_name}' and trashed = false",
-            fields="files(id, name)"
-        ).execute()
+    except Exception as e:
+        st.error(f"Error al conectar con Google Drive: {e}")
+        return None
 
     items = results.get('files', [])
 
     if not items:
-        return None, None
+        st.warning(f"No se encontró el archivo '{file_name}' en Google Drive.")
+        return None
 
     file_id = items[0]['id']
 
-    # 2. Descargar el archivo a la memoria
+    # 2. Descargar contenido en memoria
     request = service.files().get_media(fileId=file_id)
     fh = io.BytesIO()
     downloader = MediaIoBaseDownload(fh, request)
@@ -84,7 +92,7 @@ def descargar_csv(service, file_name):
         
     fh.seek(0)
 
-    # 3. Intentar combinaciones de codificación y delimitador
+    # 3. Parsear CSV probando combinaciones de encoding y delimitadores
     encodings = ['utf-8', 'utf-8-sig', 'latin1', 'cp1252']
     separators = [';', ',', '\t']
     
@@ -102,36 +110,38 @@ def descargar_csv(service, file_name):
                     engine='python'
                 )
                 
-                # Si logró parsear al menos 1 columna y filas válidas, lo consideramos correcto
                 if len(df_temp.columns) >= 1:
-                    # Preferimos separadores que dividan en más de 1 columna si el dataset es multivariable
                     if len(df_temp.columns) > 1:
                         df = df_temp
                         break
                     elif df is None:
-                        df = df_temp # Guardar como fallback por si realmente era de 1 columna
+                        df = df_temp
             except Exception:
                 continue
         if df is not None and len(df.columns) > 1:
             break
 
-    # 4. Intento final básico si todos los intentos anteriores fallaron
+    # Fallback si no se detectó separador multicolumna
     if df is None:
         try:
             fh.seek(0)
             df = pd.read_csv(fh, encoding='latin1', on_bad_lines='skip', engine='python')
         except Exception:
-            return None, file_id
+            return None
 
-    return df, file_id
+    return df
 
 
 # --- PANEL PRINCIPAL ---
-st.title("📊 Ordenes de Trabajo")
+st.title("📊 Órdenes de Trabajo")
 
 ORDENES = "ordenes.csv"
 
 # Cargar datos desde Google Drive
-df_orden = descargar_csv(ORDENES)
+df_orden = cargar_csv_desde_drive(ORDENES)
 
-st.dataframe(df_orden, use_container_width=True)
+if df_orden is not None:
+    st.write(f"Total de órdenes cargadas: **{len(df_orden)}**")
+    st.dataframe(df_orden, use_container_width=True)
+else:
+    st.info("No se pudieron cargar los datos del archivo especificado.")
