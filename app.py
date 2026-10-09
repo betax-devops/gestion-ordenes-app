@@ -163,6 +163,9 @@ elif 'Arrival Window Start' in df_orden.columns:
     columnas_renombrar['Arrival Window Start'] = 'Fecha Inicio'
 
 
+if columnas_renombrar:
+    df_orden = df_orden.rename(columns=columnas_renombrar)
+
 
 # --- MUESTRA DE DATOS EN PANTALLA ---
 if df_orden is not None:
