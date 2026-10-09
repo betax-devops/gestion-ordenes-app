@@ -142,13 +142,13 @@ df_orden = cargar_csv_desde_drive(ORDENES)
 # --- RENOMBRAR COLUMNAS ---
 columnas_renombrar = {
     'Appointment Number': 'Cita',
-    'ID Técnico Telecom': 'Técnico',
-    'Address': 'Dirección',
+    'ID Técnico Telecom': 'Tecnico',
+    'Address': 'Direccion',
     'Status': 'Estado',
     'Internal SLR Geolocation (Latitude)': 'Latitud',
     'Internal SLR Geolocation (Longitude)': 'Longitud',
     'Record Type': 'Tipo de Trabajo',
-    'Duration': 'Duración',
+    'Duration': 'Duracion',
     'Arrival Window Start': 'Fecha Inicio',
 }
 
