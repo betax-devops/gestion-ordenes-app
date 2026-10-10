@@ -150,15 +150,41 @@ columnas_renombrar = {
     'Record Type': 'Tipo de Trabajo',
     'Duration': 'Duracion',
     'Arrival Window Start': 'Fecha Inicio',
+    'State/Province': 'Provincia'
 }
 
 # Pandas ignora automáticamente las columnas que no existen en el DataFrame
 df_orden = df_orden.rename(columns=columnas_renombrar)
 
+# --- NORMALIZACION DE COLUMNAS ---
+# 1. Aplicamos rsplit desde la derecha, limitando a 2 cortes
+# expand=True convierte el resultado en nuevas columnas independientes
+columnas_nuevas = df_orden['Direccion'].str.rsplit(',', n=2, expand=True)
+
+# 2. Asignamos los resultados a tu DataFrame
+df_orden['Direccion'] = columnas_nuevas[0].str.strip()
+df_orden['Localidad'] = columnas_nuevas[1].str.strip()
+df_orden['Provincia'] = columnas_nuevas[2].str.strip()
+
+# --- CAMBIO DE TIPO DE DATO DE COLUMNA ---
+
+
+
+# --- SELECCION DE COLUMNAS A MOSTRAR ---
+columnas_seleccionadas = [
+    'Cita',
+    'Work Order',
+    'Direccion',
+    'Tecnico']
+
+columnas_existentes = [col for col in columnas_seleccionadas if col in df_orden.columns]
+
+df_normalizado = df_orden[columnas_existentes]
+
 
 # --- MUESTRA DE DATOS EN PANTALLA ---
-if df_orden is not None:
-    st.write(f"Total de órdenes cargadas: **{len(df_orden)}**")
-    st.dataframe(df_orden, use_container_width=True)
+if df_normalizado is not None:
+    st.write(f"Total de órdenes cargadas: **{len(df_normalizado)}**")
+    st.dataframe(df_normalizado, use_container_width=True)
 else:
     st.info("No se pudieron cargar los datos del archivo especificado.")
