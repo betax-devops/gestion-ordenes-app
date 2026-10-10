@@ -160,12 +160,16 @@ df_orden = df_orden.rename(columns=columnas_renombrar)
 """ --- NORMALIZACION DE COLUMNAS --- """
 # 1. Aplicamos rsplit desde la derecha, limitando a 2 cortes
 # expand=True convierte el resultado en nuevas columnas independientes
-columnas_nuevas = df_orden['Direccion'].str.rsplit(',', n=2, expand=True)
+columna_direccion = df_orden['Direccion'].str.rsplit(',', n=2, expand=True)
 
 # 2. Asignamos los resultados a tu DataFrame
-df_orden['Direccion'] = columnas_nuevas[0].str.strip()
-df_orden['Localidad'] = columnas_nuevas[1].str.strip()
-df_orden['Resto'] = columnas_nuevas[2].str.strip()
+df_orden['Direccion'] = columna_direccion[0].str.strip()
+df_orden['Localidad'] = columna_direccion[1].str.strip()
+df_orden['Resto'] = columna_direccion[2].str.strip()
+
+# Normalizacion de Fecha de Cita
+columna_fecha = df_orden['Fecha Cita'].str.rsplit(',', n=1, expand=True)
+df_orden['Fecha Cita'] = columna_fecha[0].str.strip()
 
 """ --- CAMBIO DE TIPO DE DATO DE COLUMNA --- """
 
