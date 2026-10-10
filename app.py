@@ -149,7 +149,7 @@ columnas_renombrar = {
     'Internal SLR Geolocation (Longitude)': 'Longitud',
     'Record Type': 'Tipo de Trabajo',
     'Duration': 'Duracion',
-    'Arrival Window Start': 'Fecha Inicio',
+    'Arrival Window Start': 'Fecha Cita',
     'State/Province': 'Provincia'
 }
 
@@ -164,7 +164,7 @@ columnas_nuevas = df_orden['Direccion'].str.rsplit(',', n=2, expand=True)
 # 2. Asignamos los resultados a tu DataFrame
 df_orden['Direccion'] = columnas_nuevas[0].str.strip()
 df_orden['Localidad'] = columnas_nuevas[1].str.strip()
-df_orden['Provincia'] = columnas_nuevas[2].str.strip()
+df_orden['Resto'] = columnas_nuevas[2].str.strip()
 
 # --- CAMBIO DE TIPO DE DATO DE COLUMNA ---
 
@@ -175,7 +175,12 @@ columnas_seleccionadas = [
     'Cita',
     'Work Order',
     'Direccion',
-    'Tecnico']
+    'Localidad',
+    'Provincia',
+    'Tecnico',
+    'Estado',
+    'Fecha Cita'
+]
 
 columnas_existentes = [col for col in columnas_seleccionadas if col in df_orden.columns]
 
