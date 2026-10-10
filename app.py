@@ -6,11 +6,11 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload
 
-""" --- CONFIGURACIÓN DE PÁGINA --- """
+# --- CONFIGURACIÓN DE PÁGINA ------------------------------------------------------------------------------------------------
 st.set_page_config(page_title="Gestión de OTs", layout="wide")
 
 
-""" --- MÓDULO DE AUTENTICACIÓN --- """
+# --- MÓDULO DE AUTENTICACIÓN ------------------------------------------------------------------------------------------------
 def verificar_password():
     """Retorna True si el usuario ingresó la contraseña correcta."""
     if "autenticado" not in st.session_state:
@@ -47,7 +47,7 @@ if not verificar_password():
     st.stop()
 
 
-""" --- SERVICIO GOOGLE DRIVE --- """
+# --- SERVICIO GOOGLE DRIVE ------------------------------------------------------------------------------------------------
 def obtener_servicio_drive():
     """Crea la conexión cliente con Google Drive API usando Service Account."""
     creds = service_account.Credentials.from_service_account_info(
@@ -57,7 +57,7 @@ def obtener_servicio_drive():
     return build("drive", "v3", credentials=creds)
 
 
-""" --- FUNCIÓN PARA DESCARGAR Y CARGAR CSV DESDE GOOGLE DRIVE --- """
+# --- FUNCIÓN PARA DESCARGAR Y CARGAR CSV DESDE GOOGLE DRIVE ------------------------------------------------------------------------------------------------
 @st.cache_data(ttl=300)  # Caché de 5 minutos
 def cargar_csv_desde_drive(file_name):
     """Busca y descarga un archivo CSV desde Google Drive en memoria."""
@@ -132,15 +132,15 @@ def cargar_csv_desde_drive(file_name):
     return df
 
 
-""" --- PANEL PRINCIPAL --- """
+# --- PANEL PRINCIPAL ---------------------------------------------------------------------------------------------------
 st.title("💾 Carga de Ordenes de Trabajo")
 
-""" --- CARGA DE DATOS --- """
+#--- CARGA DE DATOS ------------------------------------------------------------------------------------------------
 ORDENES = "ordenes.csv"
 df_orden = cargar_csv_desde_drive(ORDENES)
 df_copy = df_orden.copy()
 
-""" --- RENOMBRAR COLUMNAS --- """
+# --- RENOMBRAR COLUMNAS ------------------------------------------------------------------------------------------------
 columnas_renombrar = {
     'Appointment Number': 'Cita',
     'ID Técnico Telecom': 'Tecnico',
@@ -171,11 +171,11 @@ df_orden['Resto'] = columna_direccion[2].str.strip()
 columna_fecha = df_orden['Fecha Cita'].str.rsplit(',', n=1, expand=True)
 df_orden['Fecha Cita'] = columna_fecha[0].str.strip()
 
-""" --- CAMBIO DE TIPO DE DATO DE COLUMNA --- """
+# --- CAMBIO DE TIPO DE DATO DE COLUMNA ------------------------------------------------------------------------------------------------
+df_orden['Fecha Cita'] = pd.to_datetime(df_orden['Fecha Cita'], dayfirst=True)
 
 
-
-# --- SELECCION DE COLUMNAS A MOSTRAR ---
+# --- SELECCION DE COLUMNAS A MOSTRAR ------------------------------------------------------------------------------------------------
 columnas_seleccionadas = [
     'Cita',
     'Work Order',
@@ -192,7 +192,7 @@ columnas_existentes = [col for col in columnas_seleccionadas if col in df_orden.
 df_normalizado = df_orden[columnas_existentes]
 
 
-# --- MUESTRA DE DATOS EN PANTALLA ---
+# --- MUESTRA DE DATOS EN PANTALLA ---------------------------------------------------------------------------------------------------
 # Dataframe Normalizado
 if df_normalizado is not None:
     st.write(f"Total de órdenes cargadas: **{len(df_normalizado)}**")
@@ -200,6 +200,6 @@ if df_normalizado is not None:
 else:
     st.info("No se pudieron cargar los datos del archivo especificado.")
 
-#Data frame completo
+# Data frame completo
 st.write(f"Total de órdenes cargadas: **{len(df_copy)}**")
 st.dataframe(df_copy, use_container_width=True)
