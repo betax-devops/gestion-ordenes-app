@@ -138,6 +138,7 @@ st.title("💾 Carga de Ordenes de Trabajo")
 # --- CARGA DE DATOS ---
 ORDENES = "ordenes.csv"
 df_orden = cargar_csv_desde_drive(ORDENES)
+df_copy = df_orden.copy()
 
 # --- RENOMBRAR COLUMNAS ---
 columnas_renombrar = {
@@ -188,8 +189,13 @@ df_normalizado = df_orden[columnas_existentes]
 
 
 # --- MUESTRA DE DATOS EN PANTALLA ---
+# Dataframe Normalizado
 if df_normalizado is not None:
     st.write(f"Total de órdenes cargadas: **{len(df_normalizado)}**")
     st.dataframe(df_normalizado, use_container_width=True)
 else:
     st.info("No se pudieron cargar los datos del archivo especificado.")
+
+#Data frame completo
+st.write(f"Total de órdenes cargadas: **{len(df_copy)}**")
+st.dataframe(df_copy, use_container_width=True)
