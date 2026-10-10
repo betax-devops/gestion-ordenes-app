@@ -6,11 +6,11 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload
 
-# --- CONFIGURACIÓN DE PÁGINA ---
+""" --- CONFIGURACIÓN DE PÁGINA --- """
 st.set_page_config(page_title="Gestión de OTs", layout="wide")
 
 
-# --- MÓDULO DE AUTENTICACIÓN ---
+""" --- MÓDULO DE AUTENTICACIÓN --- """
 def verificar_password():
     """Retorna True si el usuario ingresó la contraseña correcta."""
     if "autenticado" not in st.session_state:
@@ -47,7 +47,7 @@ if not verificar_password():
     st.stop()
 
 
-# --- SERVICIO GOOGLE DRIVE ---
+""" --- SERVICIO GOOGLE DRIVE --- """
 def obtener_servicio_drive():
     """Crea la conexión cliente con Google Drive API usando Service Account."""
     creds = service_account.Credentials.from_service_account_info(
@@ -57,7 +57,7 @@ def obtener_servicio_drive():
     return build("drive", "v3", credentials=creds)
 
 
-# --- FUNCIÓN PARA DESCARGAR Y CARGAR CSV DESDE GOOGLE DRIVE ---
+""" --- FUNCIÓN PARA DESCARGAR Y CARGAR CSV DESDE GOOGLE DRIVE --- """
 @st.cache_data(ttl=300)  # Caché de 5 minutos
 def cargar_csv_desde_drive(file_name):
     """Busca y descarga un archivo CSV desde Google Drive en memoria."""
@@ -132,15 +132,15 @@ def cargar_csv_desde_drive(file_name):
     return df
 
 
-# --- PANEL PRINCIPAL ---
+""" --- PANEL PRINCIPAL --- """
 st.title("💾 Carga de Ordenes de Trabajo")
 
-# --- CARGA DE DATOS ---
+""" --- CARGA DE DATOS --- """
 ORDENES = "ordenes.csv"
 df_orden = cargar_csv_desde_drive(ORDENES)
 df_copy = df_orden.copy()
 
-# --- RENOMBRAR COLUMNAS ---
+""" --- RENOMBRAR COLUMNAS --- """
 columnas_renombrar = {
     'Appointment Number': 'Cita',
     'ID Técnico Telecom': 'Tecnico',
@@ -157,7 +157,7 @@ columnas_renombrar = {
 # Pandas ignora automáticamente las columnas que no existen en el DataFrame
 df_orden = df_orden.rename(columns=columnas_renombrar)
 
-# --- NORMALIZACION DE COLUMNAS ---
+""" --- NORMALIZACION DE COLUMNAS --- """
 # 1. Aplicamos rsplit desde la derecha, limitando a 2 cortes
 # expand=True convierte el resultado en nuevas columnas independientes
 columnas_nuevas = df_orden['Direccion'].str.rsplit(',', n=2, expand=True)
@@ -167,7 +167,7 @@ df_orden['Direccion'] = columnas_nuevas[0].str.strip()
 df_orden['Localidad'] = columnas_nuevas[1].str.strip()
 df_orden['Resto'] = columnas_nuevas[2].str.strip()
 
-# --- CAMBIO DE TIPO DE DATO DE COLUMNA ---
+""" --- CAMBIO DE TIPO DE DATO DE COLUMNA --- """
 
 
 
