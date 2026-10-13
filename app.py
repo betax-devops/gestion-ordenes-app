@@ -148,14 +148,14 @@ df_copy = df_orden.copy()
 columnas_renombrar = {
     'Appointment Number': 'Cita',
     'ID Técnico Telecom': 'Tecnico',
-    'Address': 'Direccion',
+    'Address': 'direccion',
     'Status': 'Estado',
     'Internal SLR Geolocation (Latitude)': 'Latitud',
     'Internal SLR Geolocation (Longitude)': 'Longitud',
     'Record Type': 'Tipo de Trabajo',
     'Duration': 'Duracion',
     'Arrival Window Start': 'Fecha Cita',
-    'State/Province': 'Provincia'
+    'State/Province': 'provincia'
 }
 
 # Pandas ignora automáticamente las columnas que no existen en el DataFrame
