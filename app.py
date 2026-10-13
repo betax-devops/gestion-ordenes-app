@@ -183,6 +183,7 @@ df_orden['Fecha Cita'] = pd.to_datetime(df_orden['Fecha Cita'], dayfirst=True)
 columnas_seleccionadas = [
     'Cita',
     'Work Order',
+    'Tipo de Trabajo',
     'Direccion',
     'Localidad',
     'Provincia',
