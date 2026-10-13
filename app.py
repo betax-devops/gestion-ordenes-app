@@ -225,6 +225,43 @@ if seccion_principal == "📋 Órdenes":
   st.title("💾 Carga de Ordenes de Trabajo")  
   st.header("📋 Sección: Órdenes (Operación y Logística)")
 
+    # --- SECCIÓN DE BÚSQUEDA ---
+    st.subheader("🔍 Buscador Integrado")
+    c1, c2, c3 = st.columns(3)
+
+    with c1:
+        search_dir = st.text_input("Buscar por Dirección")
+    with c2:
+        opciones_provincia = ["Todas", "TUCUMAN", "SANTIAGO DEL ESTERO", "CATAMARCA", "LA RIOJA"]
+        search_provincia = st.selectbox("Provincia", opciones_provincia)
+    if search_provincia == "TUCUMAN":
+        opciones_localidad = ["Todas", "AGUILARES", "BELLA VISTA", "CONCEPCION", "EL MANANTIAL", "FAMAILLA", "JUAN B ALBERDI", "LULES", "MONTEROS", "SAN MIGUEL DE TUCUMAN", "TAFI VIEJO", "YERBA BUENA"]
+    elif search_provincia == "SANTIAGO DEL ESTERO":
+        opciones_localidad = ["Todas", "ANATUYA", "SANTIAGO DEL ESTERO", "FERNANDEZ", "FRIAS", "LA BANDA", "TERMAS DEL RIO HONDO"]
+    elif search_provincia == "CATAMARCA":
+        opciones_localidad = ["Todas", "SAN F D VALLE CATAMARCA", "RECREO", "ANDALGALA"]
+    elif search_provincia == "LA RIOJA":
+        opciones_localidad = ["Todas", "CHILECITO", "LA RIOJA"]
+    else:
+        opciones_localidad = ["Todas"] + sorted(df['grupo_operativo'].dropna().astype(str).unique().tolist()) if 'grupo_operativo' in df.columns else ["Todas"]
+    with c3:
+        search_localidad = st.selectbox("Localidad", opciones_localidad)
+
+    # --- APLICAR FILTROS ---
+    #columnas_deseadas = ["cdo", "nap", "OLT", "SLOT", "PORT", "direccion", "Provincia", "grupo_operativo"]
+    #cols_existentes = [col for col in columnas_deseadas if col in df.columns]
+    
+    #filtered_df = df[cols_existentes].copy()
+
+    if search_dir and 'direccion' in df_normalizado.columns:
+        df_normalizado = df_normalizado[df_normalizado['direccion'].astype(str).str.contains(search_dir, case=False, na=False)]
+    if search_provincia != "Todas" and 'Provincia' in df_normalizado.columns:
+        df_normalizado = df_normalizado[df_normalizado['Provincia'].astype(str).str.strip().str.upper() == search_provincia]
+    if search_localidad != "Todas" and 'localidad' in df_normalizado.columns:
+        df_normalizado = df_normalizado[df_normalizado['localidad'].astype(str).str.strip().str.upper() == search_localidad]
+
+
+    
   # Creamos las pestañas para las subsecciones
   tab_volumen, tab_duracion, tab_geo, tab_datos = st.tabs([
       "📊 Volumen y Tendencias",
