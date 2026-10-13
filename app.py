@@ -257,7 +257,7 @@ if seccion_principal == "📋 Órdenes":
     st.dataframe(df_normalizado, use_container_width=True)
 
 
-    if df_normalizado is not None:
+if df_normalizado is not None:
     st.write(f"Total de órdenes cargadas: **{len(df_normalizado)}**")
     st.dataframe(df_normalizado, use_container_width=True)
 else:
