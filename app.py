@@ -148,14 +148,14 @@ df_copy = df_orden.copy()
 columnas_renombrar = {
     'Appointment Number': 'Cita',
     'ID Técnico Telecom': 'Tecnico',
-    'Address': 'direccion',
+    'Address': 'Direccion',
     'Status': 'Estado',
     'Internal SLR Geolocation (Latitude)': 'Latitud',
     'Internal SLR Geolocation (Longitude)': 'Longitud',
     'Record Type': 'Tipo de Trabajo',
     'Duration': 'Duracion',
     'Arrival Window Start': 'Fecha Cita',
-    'State/Province': 'provincia'
+    'State/Province': 'Provincia'
 }
 
 # Pandas ignora automáticamente las columnas que no existen en el DataFrame
@@ -253,7 +253,7 @@ if seccion_principal == "📋 Órdenes":
     
     #filtered_df = df[cols_existentes].copy()
 
-    if search_dir and 'direccion' in df_normalizado.columns:
+    if search_dir and 'Direccion' in df_normalizado.columns:
         df_normalizado = df_normalizado[df_normalizado['direccion'].astype(str).str.contains(search_dir, case=False, na=False)]
     if search_provincia != "Todas" and 'Provincia' in df_normalizado.columns:
         df_normalizado = df_normalizado[df_normalizado['Provincia'].astype(str).str.strip().str.upper() == search_provincia]
