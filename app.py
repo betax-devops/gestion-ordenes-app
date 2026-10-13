@@ -137,6 +137,10 @@ st.title("💾 Carga de Ordenes de Trabajo")
 
 #--- CARGA DE DATOS ------------------------------------------------------------------------------------------------
 ORDENES = "ordenes.csv"
+#CALIDAD = 
+#NPS = 
+
+
 df_orden = cargar_csv_desde_drive(ORDENES)
 df_copy = df_orden.copy()
 
@@ -157,7 +161,7 @@ columnas_renombrar = {
 # Pandas ignora automáticamente las columnas que no existen en el DataFrame
 df_orden = df_orden.rename(columns=columnas_renombrar)
 
-""" --- NORMALIZACION DE COLUMNAS --- """
+# --- NORMALIZACION DE COLUMNAS ----------------------------------------------------------------------------------------------------
 # 1. Aplicamos rsplit desde la derecha, limitando a 2 cortes
 # expand=True convierte el resultado en nuevas columnas independientes
 columna_direccion = df_orden['Direccion'].str.rsplit(',', n=2, expand=True)
@@ -203,3 +207,12 @@ else:
 # Data frame completo
 st.write(f"Total de órdenes cargadas: **{len(df_copy)}**")
 st.dataframe(df_copy, use_container_width=True)
+
+# --- NAVEGACIÓN POR SECCIONES Y SUBSECCIONES -------------------------------------------------------------------------
+st.sidebar.title("📌 Menú de Navegación")
+seccion_principal = st.sidebar.selectbox(
+    "Selecciona una Sección",
+    ["📋 Órdenes", "⚙️ Calidad", "⭐ NPS"]
+)
+
+st.markdown("---")
