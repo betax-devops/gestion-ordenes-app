@@ -212,7 +212,7 @@ df_normalizado = df_orden[columnas_existentes]
 st.sidebar.title("📌 Menú de Navegación")
 seccion_principal = st.sidebar.selectbox(
     "Selecciona una Sección",
-    ["📋 Órdenes", "⚙️ Calidad", "⭐ NPS"]
+    ["📋 Órdenes", "📈 Calidad", "📊 NPS"]
 )
 
 st.markdown("---")
