@@ -226,8 +226,8 @@ if seccion_principal == "📋 Órdenes":
   st.header("📋 Sección: Órdenes (Operación y Logística)")
 
     # --- SECCIÓN DE BÚSQUEDA ---
-    st.subheader("🔍 Buscador Integrado")
-    c1, c2, c3 = st.columns(3)
+  st.subheader("🔍 Buscador Integrado")
+  c1, c2, c3 = st.columns(3)
 
     with c1:
         search_dir = st.text_input("Buscar por Dirección")
