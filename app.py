@@ -263,6 +263,4 @@ if df_normalizado is not None:
 else:
     st.info("No se pudieron cargar los datos del archivo especificado.")
 
-# Data frame completo
-st.write(f"Total de órdenes cargadas: **{len(df_copy)}**")
-st.dataframe(df_copy, use_container_width=True)
+
