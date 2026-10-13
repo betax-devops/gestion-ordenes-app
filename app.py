@@ -254,11 +254,11 @@ if seccion_principal == "📋 Órdenes":
     #filtered_df = df[cols_existentes].copy()
 
     if search_dir and 'Direccion' in df_normalizado.columns:
-        df_normalizado = df_normalizado[df_normalizado['direccion'].astype(str).str.contains(search_dir, case=False, na=False)]
+        df_normalizado = df_normalizado[df_normalizado['Direccion'].astype(str).str.contains(search_dir, case=False, na=False)]
     if search_provincia != "Todas" and 'Provincia' in df_normalizado.columns:
         df_normalizado = df_normalizado[df_normalizado['Provincia'].astype(str).str.strip().str.upper() == search_provincia]
-    if search_localidad != "Todas" and 'localidad' in df_normalizado.columns:
-        df_normalizado = df_normalizado[df_normalizado['localidad'].astype(str).str.strip().str.upper() == search_localidad]
+    if search_localidad != "Todas" and 'Localidad' in df_normalizado.columns:
+        df_normalizado = df_normalizado[df_normalizado['Localidad'].astype(str).str.strip().str.upper() == search_localidad]
 
 
     
