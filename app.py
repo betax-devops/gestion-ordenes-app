@@ -304,8 +304,8 @@ if seccion_principal == "📋 Órdenes":
         st.info("Visualización por Localidad y Provincia.")
 
 
-  with tab_datos:
-    st.subheader("Listado General de Órdenes")
+    with tab_datos:
+        st.subheader("Listado General de Órdenes")
 
 
 
