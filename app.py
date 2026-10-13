@@ -234,11 +234,26 @@ if seccion_principal == "📋 Órdenes":
 
   with tab_volumen:
     st.subheader("Volumen de Órdenes por Fecha")
-    if 'Fecha Cita' in df_normalizado.columns:
-      conteo_fechas = (
-          df_normalizado['Fecha Cita'].dt.date.value_counts().sort_index()
-      )
-      st.line_chart(conteo_fechas)
+    # Dataframe Normalizado
+    if df_normalizado is not None:
+        st.write(f"Total de órdenes cargadas: **{len(df_normalizado)}**")
+        st.dataframe(df_normalizado, use_container_width=True)
+    else:
+        st.info("No se pudieron cargar los datos del archivo especificado.")
+    
+    # Data frame completo
+    st.write(f"Total de órdenes cargadas: **{len(df_copy)}**")
+    st.dataframe(df_copy, use_container_width=True)
+
+
+
+
+#===================================================================================================    
+    #if 'Fecha Cita' in df_normalizado.columns:
+    #  conteo_fechas = (
+    #      df_normalizado['Fecha Cita'].dt.date.value_counts().sort_index()
+    #  )
+    #  st.line_chart(conteo_fechas)
 
   with tab_duracion:
     st.subheader("Duración de los Trabajos")
