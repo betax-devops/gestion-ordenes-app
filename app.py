@@ -248,19 +248,11 @@ if seccion_principal == "📋 Órdenes":
   with tab_geo:
     st.subheader("Distribución Geográfica")
     st.info("Visualización por Localidad y Provincia.")
-    if 'Localidad' in df_normalizado.columns:
-      st.write(df_normalizado['Localidad'].value_counts())
+
 
   with tab_datos:
     st.subheader("Listado General de Órdenes")
-    st.write(f'Total de órdenes: **{len(df_normalizado)}**')
-    st.dataframe(df_normalizado, use_container_width=True)
 
 
-if df_normalizado is not None:
-    st.write(f"Total de órdenes cargadas: **{len(df_normalizado)}**")
-    st.dataframe(df_normalizado, use_container_width=True)
-else:
-    st.info("No se pudieron cargar los datos del archivo especificado.")
 
 
