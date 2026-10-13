@@ -210,7 +210,7 @@ df_normalizado = df_orden[columnas_existentes]
 
 # --- NAVEGACIÓN POR SECCIONES Y SUBSECCIONES -------------------------------------------------------------------------
 st.sidebar.title("📌 Menú de Navegación")
-seccion_principal = st.sidebar.selectbox(
+seccion_principal = st.sidebar.radio(
     "Selecciona una Sección",
     ["📋 Órdenes", "📈 Calidad", "📊 NPS"]
 )
