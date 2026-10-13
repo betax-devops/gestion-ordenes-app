@@ -263,25 +263,25 @@ if seccion_principal == "📋 Órdenes":
 
     
   # Creamos las pestañas para las subsecciones
-  tab_volumen, tab_duracion, tab_geo, tab_datos = st.tabs([
+    tab_volumen, tab_duracion, tab_geo, tab_datos = st.tabs([
       "📊 Volumen y Tendencias",
       "⏱️ Análisis de Duración",
       "🗺️ Distribución Geográfica",
       "📋 Datos Normalizados",
-  ])
+    ])
 
-  with tab_volumen:
-    st.subheader("Volumen de Órdenes por Fecha")
-    # Dataframe Normalizado
-    if df_normalizado is not None:
-        st.write(f"Total de órdenes cargadas: **{len(df_normalizado)}**")
-        st.dataframe(df_normalizado, use_container_width=True)
-    else:
-        st.info("No se pudieron cargar los datos del archivo especificado.")
-    
-    # Data frame completo
-    st.write(f"Total de órdenes cargadas: **{len(df_copy)}**")
-    st.dataframe(df_copy, use_container_width=True)
+    with tab_volumen:
+        st.subheader("Volumen de Órdenes por Fecha")
+        # Dataframe Normalizado
+        if df_normalizado is not None:
+            st.write(f"Total de órdenes cargadas: **{len(df_normalizado)}**")
+            st.dataframe(df_normalizado, use_container_width=True)
+        else:
+            st.info("No se pudieron cargar los datos del archivo especificado.")
+        
+        # Data frame completo
+        st.write(f"Total de órdenes cargadas: **{len(df_copy)}**")
+        st.dataframe(df_copy, use_container_width=True)
 
 
 
@@ -293,15 +293,15 @@ if seccion_principal == "📋 Órdenes":
     #  )
     #  st.line_chart(conteo_fechas)
 
-  with tab_duracion:
-    st.subheader("Duración de los Trabajos")
-    st.info(
-        "Aquí puedes mostrar métricas de tiempos promedio por tipo de trabajo."
-    )
+    with tab_duracion:
+        st.subheader("Duración de los Trabajos")
+        st.info(
+            "Aquí puedes mostrar métricas de tiempos promedio por tipo de trabajo."
+        )
 
-  with tab_geo:
-    st.subheader("Distribución Geográfica")
-    st.info("Visualización por Localidad y Provincia.")
+    with tab_geo:
+        st.subheader("Distribución Geográfica")
+        st.info("Visualización por Localidad y Provincia.")
 
 
   with tab_datos:
