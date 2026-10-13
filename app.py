@@ -133,7 +133,7 @@ def cargar_csv_desde_drive(file_name):
 
 
 # --- PANEL PRINCIPAL ---------------------------------------------------------------------------------------------------
-#st.title("💾 Carga de Ordenes de Trabajo")
+st.title("🌐 Panel de Control - Operaciones, Calidad y NPS")
 
 #--- CARGA DE DATOS ------------------------------------------------------------------------------------------------
 ORDENES = "ordenes.csv"
