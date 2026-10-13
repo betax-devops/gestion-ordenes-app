@@ -133,7 +133,7 @@ def cargar_csv_desde_drive(file_name):
 
 
 # --- PANEL PRINCIPAL ---------------------------------------------------------------------------------------------------
-st.title("💾 Carga de Ordenes de Trabajo")
+#st.title("💾 Carga de Ordenes de Trabajo")
 
 #--- CARGA DE DATOS ------------------------------------------------------------------------------------------------
 ORDENES = "ordenes.csv"
@@ -221,6 +221,7 @@ st.markdown("---")
 # --- SECCIÓN 1: ÓRDENES ---
 # =====================================================================================================================
 if seccion_principal == "📋 Órdenes":
+  st.title("💾 Carga de Ordenes de Trabajo")  
   st.header("📋 Sección: Órdenes (Operación y Logística)")
 
   # Creamos las pestañas para las subsecciones
