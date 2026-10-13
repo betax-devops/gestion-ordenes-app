@@ -198,15 +198,15 @@ df_normalizado = df_orden[columnas_existentes]
 
 # --- MUESTRA DE DATOS EN PANTALLA ---------------------------------------------------------------------------------------------------
 # Dataframe Normalizado
-if df_normalizado is not None:
-    st.write(f"Total de órdenes cargadas: **{len(df_normalizado)}**")
-    st.dataframe(df_normalizado, use_container_width=True)
-else:
-    st.info("No se pudieron cargar los datos del archivo especificado.")
+#if df_normalizado is not None:
+#    st.write(f"Total de órdenes cargadas: **{len(df_normalizado)}**")
+#    st.dataframe(df_normalizado, use_container_width=True)
+#else:
+#    st.info("No se pudieron cargar los datos del archivo especificado.")
 
 # Data frame completo
-st.write(f"Total de órdenes cargadas: **{len(df_copy)}**")
-st.dataframe(df_copy, use_container_width=True)
+#st.write(f"Total de órdenes cargadas: **{len(df_copy)}**")
+#st.dataframe(df_copy, use_container_width=True)
 
 # --- NAVEGACIÓN POR SECCIONES Y SUBSECCIONES -------------------------------------------------------------------------
 st.sidebar.title("📌 Menú de Navegación")
@@ -216,3 +216,53 @@ seccion_principal = st.sidebar.selectbox(
 )
 
 st.markdown("---")
+
+# =====================================================================================================================
+# --- SECCIÓN 1: ÓRDENES ---
+# =====================================================================================================================
+if seccion_principal == "📋 Órdenes":
+  st.header("📋 Sección: Órdenes (Operación y Logística)")
+
+  # Creamos las pestañas para las subsecciones
+  tab_volumen, tab_duracion, tab_geo, tab_datos = st.tabs([
+      "📊 Volumen y Tendencias",
+      "⏱️ Análisis de Duración",
+      "🗺️ Distribución Geográfica",
+      "📋 Datos Normalizados",
+  ])
+
+  with tab_volumen:
+    st.subheader("Volumen de Órdenes por Fecha")
+    if 'Fecha Cita' in df_normalizado.columns:
+      conteo_fechas = (
+          df_normalizado['Fecha Cita'].dt.date.value_counts().sort_index()
+      )
+      st.line_chart(conteo_fechas)
+
+  with tab_duracion:
+    st.subheader("Duración de los Trabajos")
+    st.info(
+        "Aquí puedes mostrar métricas de tiempos promedio por tipo de trabajo."
+    )
+
+  with tab_geo:
+    st.subheader("Distribución Geográfica")
+    st.info("Visualización por Localidad y Provincia.")
+    if 'Localidad' in df_normalizado.columns:
+      st.write(df_normalizado['Localidad'].value_counts())
+
+  with tab_datos:
+    st.subheader("Listado General de Órdenes")
+    st.write(f'Total de órdenes: **{len(df_normalizado)}**')
+    st.dataframe(df_normalizado, use_container_width=True)
+
+
+    if df_normalizado is not None:
+    st.write(f"Total de órdenes cargadas: **{len(df_normalizado)}**")
+    st.dataframe(df_normalizado, use_container_width=True)
+else:
+    st.info("No se pudieron cargar los datos del archivo especificado.")
+
+# Data frame completo
+st.write(f"Total de órdenes cargadas: **{len(df_copy)}**")
+st.dataframe(df_copy, use_container_width=True)
