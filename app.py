@@ -243,7 +243,7 @@ if seccion_principal == "📋 Órdenes":
     elif search_provincia == "LA RIOJA":
         opciones_localidad = ["Todas", "CHILECITO", "LA RIOJA"]
     else:
-        opciones_localidad = ["Todas"] + sorted(df['grupo_operativo'].dropna().astype(str).unique().tolist()) if 'grupo_operativo' in df.columns else ["Todas"]
+        opciones_localidad = ["Todas"] + sorted(df_normalizado['localidad'].dropna().astype(str).unique().tolist()) if 'localidad' in df_normalizado.columns else ["Todas"]
     with c3:
         search_localidad = st.selectbox("Localidad", opciones_localidad)
 
