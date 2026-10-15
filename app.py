@@ -225,7 +225,7 @@ df_orden['Fecha Cita'] = pd.to_datetime(
 )
 # 2. Si quieres mostrarla visualmente como DD/MM/YYYY en las tablas de Streamlit:
 #df_orden['Fecha Cita'] = df_orden['Fecha Cita'].dt.strftime('%d/%m/%Y')
-df_normalizado['Fecha Cita'] = df_normalizado['Fecha Cita'].dt.strftime('%d-%m-%Y')
+df_orden['Fecha Cita'] = df_orden['Fecha Cita'].dt.strftime('%d-%m-%Y')
 
 # --- SELECCION DE COLUMNAS A MOSTRAR ------------------------------------------------------------------------------------------------
 columnas_seleccionadas = [
