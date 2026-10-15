@@ -216,11 +216,11 @@ mapeo_localidades = {
 df_orden['Localidad'] = df_orden['Localidad'].replace(mapeo_localidades)
 
 # Normalizacion de Fecha de Cita
-#columna_fecha = df_orden['Fecha Cita'].str.rsplit(',', n=1, expand=True)
-#df_orden['Fecha Cita'] = columna_fecha[0].str.strip()
+columna_fecha = df_orden['Fecha Cita'].str.rsplit(',', n=1, expand=True)
+df_orden['Fecha Cita'] = columna_fecha[0].str.strip()
 
 # --- CAMBIO DE TIPO DE DATO DE COLUMNA ------------------------------------------------------------------------------------------------
-#df_orden['Fecha Cita'] = pd.to_datetime(df_orden['Fecha Cita'], dayfirst=True)
+df_orden['Fecha Cita'] = pd.to_datetime(df_orden['Fecha Cita'], dayfirst=True)
 # Convertir la columna al formato de texto DD/MM/YYYY
 df_orden['Fecha Cita'] = df_orden['Fecha Cita'].dt.strftime('%d/%m/%Y')
 
