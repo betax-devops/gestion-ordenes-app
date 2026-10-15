@@ -153,7 +153,7 @@ columnas_renombrar = {
     'Appointment Number': 'Cita',
     'ID Técnico Telecom': 'Tecnico',
     'Address': 'Direccion',
-    'Estado Cita Legado': 'Estado',
+    'Status Category': 'Estado',
     'Internal SLR Geolocation (Latitude)': 'Latitud',
     'Internal SLR Geolocation (Longitude)': 'Longitud',
     'Record Type': 'Tipo de Trabajo',
