@@ -244,7 +244,12 @@ if seccion_principal == "📋 Órdenes":
     with c1:
         search_dir = st.text_input("Buscar por Dirección")
     with c2:
-        opciones_localidad = ["Todas", "AGUILARES", "BELLA VISTA", "CONCEPCION", "EL MANANTIAL", "FAMAILLA", "JUAN B ALBERDI", "LULES", "MONTEROS", "SAN MIGUEL DE TUCUMAN", "TAFI VIEJO", "YERBA BUENA"]
+        opciones_localidad = (
+            df_orden['Localidad'].dropna().unique().tolist()
+            )
+        opciones_localidad.sort()
+        # Agregar una opción general por si el usuario quiere ver todo
+        opciones_localidad.insert(0, "Todas")
         search_localidad = st.selectbox("Localidad", opciones_localidad)
     with c3:
         opciones_estado = ["Todas", "Cancelado", "Completado", "En cusro", "Enviado", "Ninguno", "No se puede completar", "Programado"]
