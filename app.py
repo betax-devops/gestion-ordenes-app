@@ -161,7 +161,6 @@ columnas_renombrar = {
     'Arrival Window Start': 'Fecha Cita',
     'State/Province': 'Provincia'
 }
-
 # Pandas ignora automáticamente las columnas que no existen en el DataFrame
 df_orden = df_orden.rename(columns=columnas_renombrar)
 
@@ -172,8 +171,19 @@ columna_direccion = df_orden['Direccion'].str.rsplit(',', n=2, expand=True)
 
 # 2. Asignamos los resultados a tu DataFrame
 df_orden['Direccion'] = columna_direccion[0].str.strip()
-df_orden['Localidad'] = columna_direccion[1].str.strip()
+df_orden['Localidad2'] = columna_direccion[1].str.strip()
 df_orden['Resto'] = columna_direccion[2].str.strip()
+
+# Extraer la localidad desde la columna 'Descripcion' sin importar el formato (mayúsculas o minúsculas)
+df_orden['Localidad3'] = (
+    df_orden['Descripcion']
+    .str.extract(r'(?i)localidad\s*:\s*([^\n]+)', expand=False)
+    .str.strip()
+)
+
+# Creamos la columna definitiva 'Localidad':
+# Si Localidad2 tiene un valor, lo usa. Si es nulo (NaN), lo completa con Localidad3.
+df_orden['Localidad'] = df_orden['Localidad2'].fillna(df_orden['Localidad3'])
 
 
 # Normalizacion de Fecha de Cita
