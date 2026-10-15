@@ -313,17 +313,8 @@ if seccion_principal == "📋 Órdenes":
         if df_normalizado is not None:
             st.write(f"Total de órdenes cargadas: **{len(df_normalizado)}**")
 
-            hoy = pd.Timestamp.today().normalize()
-            # 3. Filtrar cumpliendo ambas condiciones:
-            # - Estado cerrado (puedes ajustar el texto exacto según tus datos, ej: 'CERRADO', 'COMPLETADO', etc.)
-            # - Fecha de cita menor o igual a hoy
-            df_filtrado_cierre = df_normalizado[
-                (df_normalizado['Estado'] == 'Cerrado') & 
-                (df_normalizado['Fecha Cita'] <= hoy)
-            ]
-            
             # 4. Obtener la fecha máxima (la más reciente) de ese grupo
-            ultima_actualizacion = df_filtrado_cierre['Fecha Cita'].max()
+            ultima_actualizacion = df_normalizado['Fecha Cita'].max()
             
             # 5. Mostrar el resultado formateado (o usarlo en un st.metric)
             if pd.notna(ultima_actualizacion):
