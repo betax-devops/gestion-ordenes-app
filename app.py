@@ -13,7 +13,6 @@ st.set_page_config(
     layout="wide",
 )
 
-
 # --- MÓDULO DE AUTENTICACIÓN ------------------------------------------------------------------------------------------------
 def verificar_password():
     """Retorna True si el usuario ingresó la contraseña correcta."""
@@ -50,7 +49,6 @@ def verificar_password():
 if not verificar_password():
     st.stop()
 
-
 # --- SERVICIO GOOGLE DRIVE ------------------------------------------------------------------------------------------------
 def obtener_servicio_drive():
     """Crea la conexión cliente con Google Drive API usando Service Account."""
@@ -59,7 +57,6 @@ def obtener_servicio_drive():
         scopes=["https://www.googleapis.com/auth/drive.readonly"],
     )
     return build("drive", "v3", credentials=creds)
-
 
 # --- FUNCIÓN PARA DESCARGAR Y CARGAR CSV DESDE GOOGLE DRIVE ------------------------------------------------------------------------------------------------
 @st.cache_data(ttl=300)  # Caché de 5 minutos
@@ -135,7 +132,6 @@ def cargar_csv_desde_drive(file_name):
 
     return df
 
-
 # --- PANEL PRINCIPAL ---------------------------------------------------------------------------------------------------
 st.title("🌐 Panel de Control - Operaciones, Calidad y NPS")
 
@@ -149,7 +145,7 @@ df_orden = cargar_csv_desde_drive(ORDENES)
 df_copy = df_orden.copy()
 
 # --- RENOMBRAR COLUMNAS ------------------------------------------------------------------------------------------------
-columnas_renombrar = {
+columnas_orden = {
     'Appointment Number': 'Cita',
     'ID Técnico Telecom': 'Tecnico',
     'Address': 'Direccion',
@@ -163,7 +159,7 @@ columnas_renombrar = {
     'Service Territory': 'Territorio'
 }
 # Pandas ignora automáticamente las columnas que no existen en el DataFrame
-df_orden = df_orden.rename(columns=columnas_renombrar)
+df_orden = df_orden.rename(columns=columnas_orden)
 
 # --- NORMALIZACION DE COLUMNAS ----------------------------------------------------------------------------------------------------
 # 1. Aplicamos rsplit desde la derecha, limitando a 2 cortes
@@ -192,7 +188,6 @@ df_orden['Localidad'] = df_orden['Localidad'].astype(str).str.upper().str.strip(
 # 2. Diccionario con los reemplazos para normalizar variaciones comunes
 mapeo_localidades = {
     'ALDERETE': 'ALDERETES',
-    # Si hubiera variaciones con tildes o errores comunes, se mapean a la forma oficial:
     'BANDA DEL RIO SALI': 'BANDA DEL RIO SALI',
     'BANDA DEL RIO SALÍ': 'BANDA DEL RIO SALI',
     'DRU': 'BANDA DEL RIO SALI',
@@ -221,12 +216,13 @@ mapeo_localidades = {
 df_orden['Localidad'] = df_orden['Localidad'].replace(mapeo_localidades)
 
 # Normalizacion de Fecha de Cita
-columna_fecha = df_orden['Fecha Cita'].str.rsplit(',', n=1, expand=True)
-df_orden['Fecha Cita'] = columna_fecha[0].str.strip()
+#columna_fecha = df_orden['Fecha Cita'].str.rsplit(',', n=1, expand=True)
+#df_orden['Fecha Cita'] = columna_fecha[0].str.strip()
 
 # --- CAMBIO DE TIPO DE DATO DE COLUMNA ------------------------------------------------------------------------------------------------
-df_orden['Fecha Cita'] = pd.to_datetime(df_orden['Fecha Cita'], dayfirst=True)
-
+#df_orden['Fecha Cita'] = pd.to_datetime(df_orden['Fecha Cita'], dayfirst=True)
+# Convertir la columna al formato de texto DD/MM/YYYY
+df_orden['Fecha Cita'] = df_orden['Fecha Cita'].dt.strftime('%d/%m/%Y')
 
 # --- SELECCION DE COLUMNAS A MOSTRAR ------------------------------------------------------------------------------------------------
 columnas_seleccionadas = [
