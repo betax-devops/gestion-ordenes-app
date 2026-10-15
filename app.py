@@ -9,7 +9,7 @@ from googleapiclient.http import MediaIoBaseDownload
 # --- CONFIGURACIÓN DE PÁGINA ------------------------------------------------------------------------------------------------
 st.set_page_config(
     page_title="Gestión de Trabajo - Base CCP",
-    page_icon="📡",  # Puedes cambiarlo por "📊", "🛠️", "📋", etc.
+    page_icon="📊",  # Puedes cambiarlo por "📡", "🛠️", "📋", etc.
     layout="wide",
 )
 
