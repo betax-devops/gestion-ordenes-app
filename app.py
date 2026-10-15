@@ -176,7 +176,7 @@ df_orden['Resto'] = columna_direccion[2].str.strip()
 
 # Extraer la localidad desde la columna 'Descripcion' sin importar el formato (mayúsculas o minúsculas)
 df_orden['Localidad3'] = (
-    df_orden['Descripcion']
+    df_orden['Description']
     .str.extract(r'(?i)localidad\s*:\s*([^\n]+)', expand=False)
     .str.strip()
 )
