@@ -214,10 +214,7 @@ mapeo_localidades = {
     'KEN': 'SAN MIGUEL DE TUCUMAN',
     'TUCUMAN': 'SAN MIGUEL DE TUCUMAN',
     'KYL': 'SAN MIGUEL DE TUCUMAN',
-    'SD': 'JUAN B ALBERDI'
-
-    
-    
+    'SD': 'JUAN B ALBERDI'    
 }
 
 # 3. Aplicamos el mapeo (si una localidad no está en el diccionario, se mantiene como está)
@@ -306,12 +303,16 @@ if seccion_principal == "📋 Órdenes":
     # --- APLICAR FILTROS --- 
     if search_dir and 'Direccion' in df_normalizado.columns:
         df_normalizado = df_normalizado[df_normalizado['Direccion'].astype(str).str.contains(search_dir, case=False, na=False)]
+        
     if search_localidad != "Todas" and 'Localidad' in df_normalizado.columns:
-        df_normalizado = df_normalizado[df_normalizado['Localidad'].astype(str).str.strip().str.upper() == search_localidad]
+        df_normalizado = df_normalizado[df_normalizado['Localidad'].astype(str).str.strip().str.upper() == str(search_localidad).upper()]
+        
     if search_estado != "Todas" and 'Estado' in df_normalizado.columns:
-        df_normalizado = df_normalizado[df_normalizado['Estado'].astype(str).str.strip().str.upper() == search_estado]
+        df_normalizado = df_normalizado[df_normalizado['Estado'].astype(str).str.strip().str.upper() == str(search_estado).upper()]
+        
+    # Si la columna se llama 'Provincia' en lugar de 'Territorio', cámbialo aquí:
     if search_territorio != "Todas" and 'Territorio' in df_normalizado.columns:
-        df_normalizado = df_normalizado[df_normalizado['Territorio'].astype(str).str.strip().str.upper() == search_territorio]
+        df_normalizado = df_normalizado[df_normalizado['Territorio'].astype(str).str.strip().str.upper() == str(search_territorio).upper()]
 
     
   # Creamos las pestañas para las subsecciones
