@@ -154,7 +154,7 @@ columnas_orden = {
     'Internal SLR Geolocation (Longitude)': 'Longitud',
     'Record Type': 'Tipo de Trabajo',
     'Duration': 'Duracion',
-    'Arrival Window Start': 'Fecha Cita',
+    'Last Modified Date': 'Fecha Cita',
     'State/Province': 'Provincia',
     'Service Territory': 'Territorio'
 }
@@ -216,12 +216,13 @@ mapeo_localidades = {
 df_orden['Localidad'] = df_orden['Localidad'].replace(mapeo_localidades)
 
 # Normalizacion de Fecha de Cita
-columna_fecha = df_orden['Fecha Cita'].str.rsplit(',', n=1, expand=True)
-df_orden['Fecha Cita'] = columna_fecha[0].str.strip()
-
-# --- CAMBIO DE TIPO DE DATO DE COLUMNA ------------------------------------------------------------------------------------------------
-df_orden['Fecha Cita'] = pd.to_datetime(df_orden['Fecha Cita'], dayfirst=True)
-# Convertir la columna al formato de texto DD/MM/YYYY
+# 1. Convertir 'Last Modified Date' indicando que el formato es mes/día/año (MM/DD/YYYY)
+df_orden['Fecha Cita'] = pd.to_datetime(
+    df_orden['Fecha Cita'], 
+    dayfirst=False, 
+    errors='coerce'
+)
+# 2. Si quieres mostrarla visualmente como DD/MM/YYYY en las tablas de Streamlit:
 df_orden['Fecha Cita'] = df_orden['Fecha Cita'].dt.strftime('%d/%m/%Y')
 
 # --- SELECCION DE COLUMNAS A MOSTRAR ------------------------------------------------------------------------------------------------
