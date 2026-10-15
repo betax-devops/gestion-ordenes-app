@@ -185,6 +185,28 @@ df_orden['Localidad3'] = (
 # Si Localidad2 tiene un valor, lo usa. Si es nulo (NaN), lo completa con Localidad3.
 df_orden['Localidad'] = df_orden['Localidad2'].fillna(df_orden['Localidad3'])
 
+# Renombrarmos para normalizar los datos de la columna 'Localidad'
+# 1. Opcional pero recomendado: Pasar a mayúsculas y limpiar espacios iniciales/finales
+df_orden['Localidad'] = df_orden['Localidad'].astype(str).str.upper().str.strip()
+# 2. Diccionario con los reemplazos para normalizar variaciones comunes
+mapeo_localidades = {
+    'ALDERETES': 'ALDERETES',
+    # Si hubiera variaciones con tildes o errores comunes, se mapean a la forma oficial:
+    'BANDA DEL RIO SALI': 'BANDA DEL RIO SALI',
+    'BANDA DEL RIO SALÍ': 'BANDA DEL RIO SALI',
+    # Puedes seguir agregando más equivalencias aquí:
+    # 'YERBA BUENA': 'YERBA BUENA',
+    'AGL': 'SAN MIGUEL DE TUCUMAN',
+    'CAPITAL': 'SAN MIGUEL DE TUCUMAN',
+    'CHICLIGASTA': 'CONCEPCION',
+    'CONCEPCION - CH': 'CONCEPCION',
+    'CONCEPCION-CH': 'CONCEPCION',
+    'JUAN BAUTISTA ALBERDI': 'JUAN B ALBERDI'   
+    
+}
+
+# 3. Aplicamos el mapeo (si una localidad no está en el diccionario, se mantiene como está)
+df_orden['Localidad'] = df_orden['Localidad'].replace(mapeo_localidades)
 
 # Normalizacion de Fecha de Cita
 columna_fecha = df_orden['Fecha Cita'].str.rsplit(',', n=1, expand=True)
