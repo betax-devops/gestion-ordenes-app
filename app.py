@@ -303,11 +303,7 @@ if seccion_principal == "📋 Órdenes":
         opciones_territorio.insert(0, "Todas")
         search_territorio = st.selectbox("Territorio", opciones_territorio)
     # --- APLICAR FILTROS ---
-    #columnas_deseadas = ["cdo", "nap", "OLT", "SLOT", "PORT", "direccion", "Provincia", "grupo_operativo"]
-    #cols_existentes = [col for col in columnas_deseadas if col in df.columns]
     
-    #filtered_df = df[cols_existentes].copy()
-
     if search_dir and 'Direccion' in df_normalizado.columns:
         df_normalizado = df_normalizado[df_normalizado['Direccion'].astype(str).str.contains(search_dir, case=False, na=False)]
     if search_localidad != "Todas" and 'Localidad' in df_normalizado.columns:
