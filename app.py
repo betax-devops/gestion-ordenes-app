@@ -312,7 +312,30 @@ if seccion_principal == "📋 Órdenes":
         # Dataframe Normalizado
         if df_normalizado is not None:
             st.write(f"Total de órdenes cargadas: **{len(df_normalizado)}**")
-            st.write(f"Ultima Actualizacion: ")
+
+            hoy = pd.Timestamp.today().normalize()
+            # 3. Filtrar cumpliendo ambas condiciones:
+            # - Estado cerrado (puedes ajustar el texto exacto según tus datos, ej: 'CERRADO', 'COMPLETADO', etc.)
+            # - Fecha de cita menor o igual a hoy
+            df_filtrado_cierre = df_orden[
+                (df_orden['Estado_Clean'] == 'CERRADO') & 
+                (df_orden['Fecha Cita'] <= hoy)
+            ]
+            
+            # 4. Obtener la fecha máxima (la más reciente) de ese grupo
+            ultima_actualizacion = df_filtrado_cierre['Fecha Cita'].max()
+            
+            # 5. Mostrar el resultado formateado (o usarlo en un st.metric)
+            if pd.notna(ultima_actualizacion):
+                ultima_actualizacion_str = ultima_actualizacion.strftime('%d/%m/%Y')
+                print(f"La última fecha de actualización es: {ultima_actualizacion_str}")
+                
+                # Si quieres mostrarlo en tu dashboard de Streamlit:
+                # st.metric("Última Actualización (Cerrados)", ultima_actualizacion_str)
+            else:
+                print("No se encontraron registros que cumplan con las condiciones.")
+            
+            #st.write(f"Ultima Actualizacion: ")
             st.dataframe(df_normalizado, use_container_width=True)
         else:
             st.info("No se pudieron cargar los datos del archivo especificado.")
