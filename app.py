@@ -240,7 +240,7 @@ if seccion_principal == "📋 Órdenes":
         search_localidad = st.selectbox("Localidad", opciones_localidad)
     with c3:
         opciones_estado = ["Cancelado", "Completado", "En cusro", "Enviado", "Ninguno", "No se puede completar", "Programado"]
-        search_estado = st.selectbox("Estado", opcioones_estado)
+        search_estado = st.selectbox("Estado", opciones_estado)
     # --- APLICAR FILTROS ---
     #columnas_deseadas = ["cdo", "nap", "OLT", "SLOT", "PORT", "direccion", "Provincia", "grupo_operativo"]
     #cols_existentes = [col for col in columnas_deseadas if col in df.columns]
