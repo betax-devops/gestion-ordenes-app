@@ -235,7 +235,6 @@ columnas_seleccionadas = [
     'Tipo de Trabajo',
     'Direccion',
     'Localidad',
-    'Provincia',
     'Territorio',
     'Tecnico',
     'Estado',
