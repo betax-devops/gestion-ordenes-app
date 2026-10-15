@@ -190,7 +190,7 @@ df_orden['Localidad'] = df_orden['Localidad2'].fillna(df_orden['Localidad3'])
 df_orden['Localidad'] = df_orden['Localidad'].astype(str).str.upper().str.strip()
 # 2. Diccionario con los reemplazos para normalizar variaciones comunes
 mapeo_localidades = {
-    'ALDERETES': 'ALDERETES',
+    'ALDERETE': 'ALDERETES',
     # Si hubiera variaciones con tildes o errores comunes, se mapean a la forma oficial:
     'BANDA DEL RIO SALI': 'BANDA DEL RIO SALI',
     'BANDA DEL RIO SALÍ': 'BANDA DEL RIO SALI',
@@ -201,7 +201,8 @@ mapeo_localidades = {
     'CHICLIGASTA': 'CONCEPCION',
     'CONCEPCION - CH': 'CONCEPCION',
     'CONCEPCION-CH': 'CONCEPCION',
-    'JUAN BAUTISTA ALBERDI': 'JUAN B ALBERDI'   
+    'JUAN BAUTISTA ALBERDI': 'JUAN B ALBERDI',
+    'VILLA BURRUYACU': 'BURRUYACU'
     
 }
 
