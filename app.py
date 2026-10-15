@@ -172,16 +172,9 @@ columna_direccion = df_orden['Direccion'].str.rsplit(',', n=2, expand=True)
 
 # 2. Asignamos los resultados a tu DataFrame
 df_orden['Direccion'] = columna_direccion[0].str.strip()
-df_orden['Localidad2'] = columna_direccion[1].str.strip()
+df_orden['Localidad'] = columna_direccion[1].str.strip()
 df_orden['Resto'] = columna_direccion[2].str.strip()
 
-# Normalizamos la columna Descripcion para obtener la localidad
-# Extraer la localidad desde la columna 'Descripcion' sin importar el formato (mayúsculas o minúsculas)
-df_orden['Localidad'] = (
-    df_orden['Description']
-    .str.extract(r'(?i)localidad\s*:\s*([^\n]+)', expand=False)
-    .str.strip()
-)
 
 # Normalizacion de Fecha de Cita
 columna_fecha = df_orden['Fecha Cita'].str.rsplit(',', n=1, expand=True)
