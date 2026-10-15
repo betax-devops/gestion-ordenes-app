@@ -318,8 +318,8 @@ if seccion_principal == "📋 Órdenes":
             
             # 5. Mostrar el resultado formateado (o usarlo en un st.metric)
             if pd.notna(ultima_actualizacion):
-                ultima_actualizacion_str = ultima_actualizacion.strftime('%d/%m/%Y')
-                print(f"La última fecha de actualización es: {ultima_actualizacion_str}")
+                #ultima_actualizacion_str = ultima_actualizacion.strftime('%d/%m/%Y')
+                print(f"La última fecha de actualización es: {ultima_actualizacion}")
                 
                 # Si quieres mostrarlo en tu dashboard de Streamlit:
                 # st.metric("Última Actualización (Cerrados)", ultima_actualizacion_str)
