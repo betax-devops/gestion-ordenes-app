@@ -246,19 +246,6 @@ columnas_existentes = [col for col in columnas_seleccionadas if col in df_orden.
 
 df_normalizado = df_orden[columnas_existentes]
 
-
-# --- MUESTRA DE DATOS EN PANTALLA ---------------------------------------------------------------------------------------------------
-# Dataframe Normalizado
-#if df_normalizado is not None:
-#    st.write(f"Total de órdenes cargadas: **{len(df_normalizado)}**")
-#    st.dataframe(df_normalizado, use_container_width=True)
-#else:
-#    st.info("No se pudieron cargar los datos del archivo especificado.")
-
-# Data frame completo
-#st.write(f"Total de órdenes cargadas: **{len(df_copy)}**")
-#st.dataframe(df_copy, use_container_width=True)
-
 # --- NAVEGACIÓN POR SECCIONES Y SUBSECCIONES -------------------------------------------------------------------------
 st.sidebar.title("📌 Menú de Navegación")
 seccion_principal = st.sidebar.pills(
@@ -317,12 +304,13 @@ if seccion_principal == "📋 Órdenes":
     
   # Creamos las pestañas para las subsecciones
     tab_volumen, tab_duracion, tab_geo, tab_datos = st.tabs([
-      "📊 Volumen y Tendencias",
-      "⏱️ Análisis de Duración",
+      "📋 Ordenes de Trabajo",
+      "📊 Análisis",
       "🗺️ Distribución Geográfica",
       "📋 Datos Normalizados",
     ])
-
+    
+# --- MUESTRA DE DATOS EN PANTALLA ---------------------------------------------------------------------------------------------------
     with tab_volumen:
         st.subheader("Volumen de Órdenes por Fecha")
         # Dataframe Normalizado
