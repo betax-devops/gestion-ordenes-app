@@ -218,15 +218,11 @@ df_orden['Localidad'] = df_orden['Localidad'].replace(mapeo_localidades)
 
 # Normalizacion de Fecha de Cita
 # 1. Convertir 'Last Modified Date' indicando que el formato es mes/día/año (MM/DD/YYYY)
-df_orden['Fecha Cita'] = pd.to_datetime(
-    df_orden['Fecha Cita'], 
-    dayfirst=False, 
-    errors='coerce'
-)
+df_orden['Fecha Cita'] = pd.to_datetime(df_orden['Fecha Cita'],dayfirst=False,errors='coerce')
 # 2. Si quieres mostrarla visualmente como DD/MM/YYYY en las tablas de Streamlit:
 #df_orden['Fecha Cita'] = df_orden['Fecha Cita'].dt.strftime('%d/%m/%Y')
 #df_orden['Fecha Cita'] = df_orden['Fecha Cita'].dt.strftime('%d-%m-%Y')
-
+df_orden['Fecha Cita'] = pd.to_datetime(df_orden['Fecha Cita']).dt.date
 # --- SELECCION DE COLUMNAS A MOSTRAR ------------------------------------------------------------------------------------------------
 columnas_seleccionadas = [
     'Cita',
