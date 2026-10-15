@@ -252,7 +252,7 @@ if seccion_principal == "📋 Órdenes":
     if search_localidad != "Todas" and 'Localidad' in df_normalizado.columns:
         df_normalizado = df_normalizado[df_normalizado['Localidad'].astype(str).str.strip().str.upper() == search_localidad]
     if search_estado and 'Estado' in df_normalizado.columns:
-        df_normalizado = df_normalizado[df_normalizado['Estado'].astype(str).srt.strip().upper() == search_estado]
+        df_normalizado = df_normalizado[df_normalizado['Estado'].astype(str).srt.strip().str.upper() == search_estado]
 
     
   # Creamos las pestañas para las subsecciones
