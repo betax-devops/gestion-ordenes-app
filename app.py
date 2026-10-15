@@ -285,7 +285,7 @@ if seccion_principal == "📋 Órdenes":
         opciones_territorio.insert(0, "Todas")
         search_territorio = st.selectbox("Territorio", opciones_territorio)
     with c5:
-        search_cliente = st.text_input("Buscar por Dirección")
+        search_cliente = st.text_input("Buscar por Cliente")
         
     # --- APLICAR FILTROS --- 
     if search_dir and 'Direccion' in df_normalizado.columns:
