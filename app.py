@@ -313,6 +313,7 @@ if seccion_principal == "📋 Órdenes":
         if df_normalizado is not None:
             st.write(f"Total de órdenes cargadas: **{len(df_normalizado)}**")
             # Obtener la fecha máxima (la más reciente) de ese grupo
+            df_normalizado['Fecha Cita'] = pd.to_datetime(df_normalizado['Fecha Cita'], errors='coerce')
             ultima_actualizacion = df_normalizado['Fecha Cita'].max()
             st.write(f"La última fecha de actualización es: {ultima_actualizacion}")
             # Muestra de los datos Normalizados
