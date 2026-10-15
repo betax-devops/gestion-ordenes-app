@@ -239,7 +239,7 @@ if seccion_principal == "📋 Órdenes":
         opciones_localidad = ["Todas", "AGUILARES", "BELLA VISTA", "CONCEPCION", "EL MANANTIAL", "FAMAILLA", "JUAN B ALBERDI", "LULES", "MONTEROS", "SAN MIGUEL DE TUCUMAN", "TAFI VIEJO", "YERBA BUENA"]
         search_localidad = st.selectbox("Localidad", opciones_localidad)
     with c3:
-        opciones_estado = ["Cancelado", "Completado", "En cusro", "Enviado", "Ninguno", "No se puede completar", "Programado"]
+        opciones_estado = ["Todas", "Cancelado", "Completado", "En cusro", "Enviado", "Ninguno", "No se puede completar", "Programado"]
         search_estado = st.selectbox("Estado", opciones_estado)
     # --- APLICAR FILTROS ---
     #columnas_deseadas = ["cdo", "nap", "OLT", "SLOT", "PORT", "direccion", "Provincia", "grupo_operativo"]
@@ -251,7 +251,7 @@ if seccion_principal == "📋 Órdenes":
         df_normalizado = df_normalizado[df_normalizado['Direccion'].astype(str).str.contains(search_dir, case=False, na=False)]
     if search_localidad != "Todas" and 'Localidad' in df_normalizado.columns:
         df_normalizado = df_normalizado[df_normalizado['Localidad'].astype(str).str.strip().str.upper() == search_localidad]
-    if search_estado and 'Estado' in df_normalizado.columns:
+    if search_estado != "Todas" and 'Estado' in df_normalizado.columns:
         df_normalizado = df_normalizado[df_normalizado['Estado'].astype(str).srt.strip().str.upper() == search_estado]
 
     
