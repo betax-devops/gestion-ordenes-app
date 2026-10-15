@@ -302,16 +302,16 @@ if seccion_principal == "📋 Órdenes":
         opciones_territorio.sort()
         opciones_territorio.insert(0, "Todas")
         search_territorio = st.selectbox("Territorio", opciones_territorio)
-    # --- APLICAR FILTROS ---
-    
+        
+    # --- APLICAR FILTROS --- 
     if search_dir and 'Direccion' in df_normalizado.columns:
         df_normalizado = df_normalizado[df_normalizado['Direccion'].astype(str).str.contains(search_dir, case=False, na=False)]
     if search_localidad != "Todas" and 'Localidad' in df_normalizado.columns:
         df_normalizado = df_normalizado[df_normalizado['Localidad'].astype(str).str.strip().str.upper() == search_localidad]
     if search_estado != "Todas" and 'Estado' in df_normalizado.columns:
-        df_normalizado = df_normalizado[df_normalizado['Estado'].astype(str).srt.strip().str.upper() == search_estado]
+        df_normalizado = df_normalizado[df_normalizado['Estado'].astype(str).str.strip().str.upper() == search_estado]
     if search_territorio != "Todas" and 'Territorio' in df_normalizado.columns:
-        df_normalizado = df_normalizado[df_normalizado['Territorio'].astype(str).srt.strip().str.upper() == search_territorio]
+        df_normalizado = df_normalizado[df_normalizado['Territorio'].astype(str).str.strip().str.upper() == search_territorio]
 
     
   # Creamos las pestañas para las subsecciones
