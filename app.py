@@ -194,20 +194,24 @@ mapeo_localidades = {
     # Si hubiera variaciones con tildes o errores comunes, se mapean a la forma oficial:
     'BANDA DEL RIO SALI': 'BANDA DEL RIO SALI',
     'BANDA DEL RIO SALÍ': 'BANDA DEL RIO SALI',
-    # Puedes seguir agregando más equivalencias aquí:
-    # 'YERBA BUENA': 'YERBA BUENA',
-    'AGL': 'SAN MIGUEL DE TUCUMAN',
-    'CAPITAL': 'SAN MIGUEL DE TUCUMAN',
+    'DRU': 'BANDA DEL RIO SALI',
     'CHICLIGASTA': 'CONCEPCION',
     'CONCEPCION - CH': 'CONCEPCION',
     'CONCEPCION-CH': 'CONCEPCION',
     'JUAN BAUTISTA ALBERDI': 'JUAN B ALBERDI',
     'VILLA BURRUYACU': 'BURRUYACU',
     'CEK': 'YERBA BUENA',
+    'AGL': 'SAN MIGUEL DE TUCUMAN',
+    'CAPITAL': 'SAN MIGUEL DE TUCUMAN',
     'CFC': 'SAN MIGUEL DE TUCUMAN',
     'CIM': 'SAN MIGUEL DE TUCUMAN',
     'DLX': 'SAN MIGUEL DE TUCUMAN',
-    'DRU': 'BANDA DEL RIO SALI'
+    'IMA': 'SAN MIGUEL DE TUCUMAN',
+    'ISC': 'SAN MIGUEL DE TUCUMAN',
+    'SAN MIGUEL DE TUCUMÁN': 'SAN MIGUEL DE TUCUMAN',
+    'KAM': 'SAN MIGUEL DE TUCUMAN',
+    'KEN': 'SAN MIGUEL DE TUCUMAN'
+
     
     
 }
