@@ -156,7 +156,8 @@ columnas_orden = {
     'Duration': 'Duracion',
     'Last Modified Date': 'Fecha Cita',
     'State/Province': 'Provincia',
-    'Service Territory': 'Territorio'
+    'Service Territory': 'Territorio',
+    'Contact': 'Cliente'
 }
 # Pandas ignora automáticamente las columnas que no existen en el DataFrame
 df_orden = df_orden.rename(columns=columnas_orden)
@@ -232,6 +233,7 @@ columnas_seleccionadas = [
     'Tipo de Trabajo',
     'Direccion',
     'Localidad',
+    'Cliente',
     'Territorio',
     'Tecnico',
     'Estado',
@@ -260,7 +262,7 @@ if seccion_principal == "📋 Órdenes":
 
     # --- SECCIÓN DE BÚSQUEDA ---
     st.subheader("🔍 Buscador Integrado")
-    c1, c2, c3, c4 = st.columns(4)
+    c1, c2, c3, c4, c5 = st.columns(5)
 
     with c1:
         search_dir = st.text_input("Buscar por Dirección")
@@ -282,6 +284,8 @@ if seccion_principal == "📋 Órdenes":
         opciones_territorio.sort()
         opciones_territorio.insert(0, "Todas")
         search_territorio = st.selectbox("Territorio", opciones_territorio)
+    with c5:
+        search_cliente = st.text_input("Buscar por Dirección")
         
     # --- APLICAR FILTROS --- 
     if search_dir and 'Direccion' in df_normalizado.columns:
@@ -296,6 +300,9 @@ if seccion_principal == "📋 Órdenes":
     # Si la columna se llama 'Provincia' en lugar de 'Territorio', cámbialo aquí:
     if search_territorio != "Todas" and 'Territorio' in df_normalizado.columns:
         df_normalizado = df_normalizado[df_normalizado['Territorio'].astype(str).str.strip().str.upper() == str(search_territorio).upper()]
+
+    if search_cliente and 'Cliente' in df_normalizado.columns:
+        df_normalizado = df_normalizado[df_normalizado['Cliente'].astype(str).str.contains(search_dir, case=False, na=False)]
 
     
   # Creamos las pestañas para las subsecciones
