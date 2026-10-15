@@ -315,7 +315,7 @@ if seccion_principal == "📋 Órdenes":
             # Obtener la fecha máxima (la más reciente) de ese grupo
             #df_normalizado['Fecha Cita'] = pd.to_datetime(df_normalizado['Fecha Cita'], errors='coerce')
             #ultima_actualizacion = df_normalizado['Fecha Cita'].max()
-            #st.write(f"La última fecha de actualización es: {ultima_actualizacion}")
+            st.write(f"La última fecha de actualización es: {df_normalizado['Fecha Cita'].max()}")
             # Muestra de los datos Normalizados
             st.dataframe(df_normalizado, use_container_width=True)
         else:
