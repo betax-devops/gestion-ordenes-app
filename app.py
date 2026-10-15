@@ -160,6 +160,7 @@ columnas_renombrar = {
     'Duration': 'Duracion',
     'Arrival Window Start': 'Fecha Cita',
     'State/Province': 'Provincia'
+    'Service Territory': 'Territorio'
 }
 # Pandas ignora automáticamente las columnas que no existen en el DataFrame
 df_orden = df_orden.rename(columns=columnas_renombrar)
@@ -238,6 +239,7 @@ columnas_seleccionadas = [
     'Direccion',
     'Localidad',
     'Provincia',
+    'Territorio'
     'Tecnico',
     'Estado',
     'Fecha Cita'
@@ -278,13 +280,13 @@ if seccion_principal == "📋 Órdenes":
 
     # --- SECCIÓN DE BÚSQUEDA ---
     st.subheader("🔍 Buscador Integrado")
-    c1, c2, c3 = st.columns(3)
+    c1, c2, c3, c4 = st.columns(4)
 
     with c1:
         search_dir = st.text_input("Buscar por Dirección")
     with c2:
         opciones_localidad = (
-            df_orden['Localidad'].dropna().unique().tolist()
+            df_normalizado['Localidad'].dropna().unique().tolist()
             )
         opciones_localidad.sort()
         # Agregar una opción general por si el usuario quiere ver todo
@@ -293,6 +295,13 @@ if seccion_principal == "📋 Órdenes":
     with c3:
         opciones_estado = ["Todas", "Cancelado", "Completado", "En cusro", "Enviado", "Ninguno", "No se puede completar", "Programado"]
         search_estado = st.selectbox("Estado", opciones_estado)
+    with c4:
+        opciones_territorio = (
+            df_normalizado['Territorio'].dropna().unique().tolist()
+            )
+        opciones_territorio.sort()
+        opciones_territorio.intert(0, "Todas")
+        search_territorio = st.selectbox("Territorio", opciones_territorio)
     # --- APLICAR FILTROS ---
     #columnas_deseadas = ["cdo", "nap", "OLT", "SLOT", "PORT", "direccion", "Provincia", "grupo_operativo"]
     #cols_existentes = [col for col in columnas_deseadas if col in df.columns]
@@ -305,6 +314,8 @@ if seccion_principal == "📋 Órdenes":
         df_normalizado = df_normalizado[df_normalizado['Localidad'].astype(str).str.strip().str.upper() == search_localidad]
     if search_estado != "Todas" and 'Estado' in df_normalizado.columns:
         df_normalizado = df_normalizado[df_normalizado['Estado'].astype(str).srt.strip().str.upper() == search_estado]
+    if search_territorio != "Todas" and 'Territorio' in df_normalizado.columns:
+        df_normalizado = df_normalizado[df_normalizado['Territorio'].astype(str).srt.strip().str.upper() == search_territorio]
 
     
   # Creamos las pestañas para las subsecciones
