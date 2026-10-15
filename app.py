@@ -159,7 +159,7 @@ columnas_renombrar = {
     'Record Type': 'Tipo de Trabajo',
     'Duration': 'Duracion',
     'Arrival Window Start': 'Fecha Cita',
-    'State/Province': 'Provincia'
+    'State/Province': 'Provincia',
     'Service Territory': 'Territorio'
 }
 # Pandas ignora automáticamente las columnas que no existen en el DataFrame
