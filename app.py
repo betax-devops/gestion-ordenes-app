@@ -302,7 +302,7 @@ if seccion_principal == "📋 Órdenes":
         df_normalizado = df_normalizado[df_normalizado['Territorio'].astype(str).str.strip().str.upper() == str(search_territorio).upper()]
 
     if search_cliente and 'Cliente' in df_normalizado.columns:
-        df_normalizado = df_normalizado[df_normalizado['Cliente'].astype(str).str.contains(search_dir, case=False, na=False)]
+        df_normalizado = df_normalizado[df_normalizado['Cliente'].astype(str).str.contains(search_cliente, case=False, na=False)]
 
     
   # Creamos las pestañas para las subsecciones
