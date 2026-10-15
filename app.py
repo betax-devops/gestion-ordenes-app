@@ -279,7 +279,7 @@ if seccion_principal == "📋 Órdenes":
         # Dataframe Normalizado
         if df_normalizado is not None:
             st.write(f"Total de órdenes cargadas: **{len(df_normalizado)}**")
-            st.write(f"Ultima Actualizacion: )
+            st.write(f"Ultima Actualizacion: ")
             st.dataframe(df_normalizado, use_container_width=True)
         else:
             st.info("No se pudieron cargar los datos del archivo especificado.")
