@@ -239,7 +239,7 @@ columnas_seleccionadas = [
     'Direccion',
     'Localidad',
     'Provincia',
-    'Territorio'
+    'Territorio',
     'Tecnico',
     'Estado',
     'Fecha Cita'
