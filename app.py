@@ -300,7 +300,7 @@ if seccion_principal == "📋 Órdenes":
             df_normalizado['Territorio'].dropna().unique().tolist()
             )
         opciones_territorio.sort()
-        opciones_territorio.intert(0, "Todas")
+        opciones_territorio.insert(0, "Todas")
         search_territorio = st.selectbox("Territorio", opciones_territorio)
     # --- APLICAR FILTROS ---
     #columnas_deseadas = ["cdo", "nap", "OLT", "SLOT", "PORT", "direccion", "Provincia", "grupo_operativo"]
