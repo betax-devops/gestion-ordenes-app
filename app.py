@@ -317,9 +317,9 @@ if seccion_principal == "📋 Órdenes":
             # 3. Filtrar cumpliendo ambas condiciones:
             # - Estado cerrado (puedes ajustar el texto exacto según tus datos, ej: 'CERRADO', 'COMPLETADO', etc.)
             # - Fecha de cita menor o igual a hoy
-            df_filtrado_cierre = df_orden[
-                (df_orden['Estado_Clean'] == 'CERRADO') & 
-                (df_orden['Fecha Cita'] <= hoy)
+            df_filtrado_cierre = df_normalizado[
+                (df_normalizado['Estado'] == 'Cerrado') & 
+                (df_normalizado['Fecha Cita'] <= hoy)
             ]
             
             # 4. Obtener la fecha máxima (la más reciente) de ese grupo
