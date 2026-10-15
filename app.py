@@ -235,22 +235,12 @@ if seccion_principal == "📋 Órdenes":
 
     with c1:
         search_dir = st.text_input("Buscar por Dirección")
-    with c2:
-        opciones_provincia = ["Todas", "TUCUMAN", "SANTIAGO DEL ESTERO", "CATAMARCA", "LA RIOJA"]
-        search_provincia = st.selectbox("Provincia", opciones_provincia)
-    if search_provincia == "TUCUMAN":
+     with c2:
         opciones_localidad = ["Todas", "AGUILARES", "BELLA VISTA", "CONCEPCION", "EL MANANTIAL", "FAMAILLA", "JUAN B ALBERDI", "LULES", "MONTEROS", "SAN MIGUEL DE TUCUMAN", "TAFI VIEJO", "YERBA BUENA"]
-    elif search_provincia == "SANTIAGO DEL ESTERO":
-        opciones_localidad = ["Todas", "ANATUYA", "SANTIAGO DEL ESTERO", "FERNANDEZ", "FRIAS", "LA BANDA", "TERMAS DEL RIO HONDO"]
-    elif search_provincia == "CATAMARCA":
-        opciones_localidad = ["Todas", "SAN F D VALLE CATAMARCA", "RECREO", "ANDALGALA"]
-    elif search_provincia == "LA RIOJA":
-        opciones_localidad = ["Todas", "CHILECITO", "LA RIOJA"]
-    else:
-        opciones_localidad = ["Todas"] + sorted(df_normalizado['localidad'].dropna().astype(str).unique().tolist()) if 'localidad' in df_normalizado.columns else ["Todas"]
-    with c3:
         search_localidad = st.selectbox("Localidad", opciones_localidad)
-
+    with c3:
+        opciones_estado = ["Cancelado", "Completado", "En cusro", "Enviado", "Ninguno", "No se puede completar", "Programado"]
+        search_estado = st.selectbox("Estado", opcioones_estado)
     # --- APLICAR FILTROS ---
     #columnas_deseadas = ["cdo", "nap", "OLT", "SLOT", "PORT", "direccion", "Provincia", "grupo_operativo"]
     #cols_existentes = [col for col in columnas_deseadas if col in df.columns]
@@ -259,11 +249,10 @@ if seccion_principal == "📋 Órdenes":
 
     if search_dir and 'Direccion' in df_normalizado.columns:
         df_normalizado = df_normalizado[df_normalizado['Direccion'].astype(str).str.contains(search_dir, case=False, na=False)]
-    if search_provincia != "Todas" and 'Provincia' in df_normalizado.columns:
-        df_normalizado = df_normalizado[df_normalizado['Provincia'].astype(str).str.strip().str.upper() == search_provincia]
     if search_localidad != "Todas" and 'Localidad' in df_normalizado.columns:
         df_normalizado = df_normalizado[df_normalizado['Localidad'].astype(str).str.strip().str.upper() == search_localidad]
-
+    if search_estado and 'Estado' in df_normalizado.columns:
+        df_normalizado = df_normalizado[df_normalizado['Estado'].astype(str).srt.strip().upper() == search_estado]
 
     
   # Creamos las pestañas para las subsecciones
