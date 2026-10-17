@@ -310,7 +310,7 @@ if seccion_principal == "📋 Órdenes":
     if search_estado != "Todas" and 'Estado' in df_normalizado.columns:
         df_normalizado = df_normalizado[df_normalizado['Estado'].astype(str).str.strip().str.upper() == str(search_estado).upper()]
         
-    if search_tarea =! "Todas" and 'Tipo de Tarea' in df_normalizado.columns:
+    if search_tarea != "Todas" and 'Tipo de Tarea' in df_normalizado.columns:
         df_normalizado = df_normalizado[df_normalizado['Tipo de Tarea'].astype(str).str.strip().str.upper() == str(search_tarea).upper()]
 
     if search_cliente and 'Cliente' in df_normalizado.columns:
