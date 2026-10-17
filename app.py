@@ -261,7 +261,7 @@ if seccion_principal == "📋 Órdenes":
 
     # --- SECCIÓN DE BÚSQUEDA ---
     st.subheader("🔍 Buscador Integrado")
-    c1, c2, c3, c4, c5 = st.columns(5)
+    c1, c2, c3, c4, c5, c6 = st.columns(6)
 
     with c1:
         search_dir = st.text_input("Buscar por Dirección")
@@ -274,16 +274,27 @@ if seccion_principal == "📋 Órdenes":
         opciones_localidad.insert(0, "Todas")
         search_localidad = st.selectbox("Localidad", opciones_localidad)
     with c3:
-        opciones_estado = ["Todas", "Cancelado", "Completado", "En cusro", "Enviado", "Ninguno", "No se puede completar", "Programado"]
-        search_estado = st.selectbox("Estado", opciones_estado)
-    with c4:
         opciones_territorio = (
             df_normalizado['Territorio'].dropna().unique().tolist()
             )
         opciones_territorio.sort()
         opciones_territorio.insert(0, "Todas")
         search_territorio = st.selectbox("Territorio", opciones_territorio)
+    with c4:
+        opciones_estado = (
+            df_normalizado['Estado'].dropna().unique().tolist()
+            )
+        opciones_estado.sort()
+        opciones_estado.insert(0, "Todas")
+        search_estado = st.selectbox("Estado", opciones_estado)
     with c5:
+        opciones_tarea = (
+            df_normalizado['Tipo de Trabajo'].dropna().unique().tolist()
+            )
+        opciones_tarea.sort()
+        opciones_tarea.insert(0, "Todas")
+        searh_tarea = st.selectbox("Tipo de Trabajo", opciones_tarea)
+    with c6:
         search_cliente = st.text_input("Buscar por Cliente")
         
     # --- APLICAR FILTROS --- 
@@ -292,13 +303,15 @@ if seccion_principal == "📋 Órdenes":
         
     if search_localidad != "Todas" and 'Localidad' in df_normalizado.columns:
         df_normalizado = df_normalizado[df_normalizado['Localidad'].astype(str).str.strip().str.upper() == str(search_localidad).upper()]
+
+    if search_territorio != "Todas" and 'Territorio' in df_normalizado.columns:
+        df_normalizado = df_normalizado[df_normalizado['Territorio'].astype(str).str.strip().str.upper() == str(search_territorio).upper()]
         
     if search_estado != "Todas" and 'Estado' in df_normalizado.columns:
         df_normalizado = df_normalizado[df_normalizado['Estado'].astype(str).str.strip().str.upper() == str(search_estado).upper()]
         
-    # Si la columna se llama 'Provincia' en lugar de 'Territorio', cámbialo aquí:
-    if search_territorio != "Todas" and 'Territorio' in df_normalizado.columns:
-        df_normalizado = df_normalizado[df_normalizado['Territorio'].astype(str).str.strip().str.upper() == str(search_territorio).upper()]
+    if search_tarea =! "Todas" and 'Tipo de Tarea' in df_normalizado.columns:
+        df_normalizado = df_normalizado[df_normalizado['Tipo de Tarea'].astype(str).str.strip().str.upper() == str(search_tarea).upper()]
 
     if search_cliente and 'Cliente' in df_normalizado.columns:
         df_normalizado = df_normalizado[df_normalizado['Cliente'].astype(str).str.contains(search_cliente, case=False, na=False)]
