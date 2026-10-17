@@ -6,14 +6,17 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload
 
-# --- CONFIGURACIÓN DE PÁGINA ------------------------------------------------------------------------------------------------
+#============================================================================================================================
+# --- CONFIGURACIÓN DE PÁGINA -----------------------------------------------------------------------------------------------
+#============================================================================================================================
 st.set_page_config(
     page_title="Gestión de Trabajo - Base CCP",
     page_icon="📊",  # Puedes cambiarlo por "📡", "🛠️", "📋", etc.
     layout="wide",
 )
-
-# --- MÓDULO DE AUTENTICACIÓN ------------------------------------------------------------------------------------------------
+#============================================================================================================================
+# --- MÓDULO DE AUTENTICACIÓN -----------------------------------------------------------------------------------------------
+#============================================================================================================================
 def verificar_password():
     """Retorna True si el usuario ingresó la contraseña correcta."""
     if "autenticado" not in st.session_state:
@@ -48,8 +51,9 @@ def verificar_password():
 # Bloquear la ejecución si el usuario no ingresó la contraseña
 if not verificar_password():
     st.stop()
-
-# --- SERVICIO GOOGLE DRIVE ------------------------------------------------------------------------------------------------
+#============================================================================================================================
+# --- SERVICIO GOOGLE DRIVE -------------------------------------------------------------------------------------------------
+#============================================================================================================================
 def obtener_servicio_drive():
     """Crea la conexión cliente con Google Drive API usando Service Account."""
     creds = service_account.Credentials.from_service_account_info(
@@ -57,8 +61,9 @@ def obtener_servicio_drive():
         scopes=["https://www.googleapis.com/auth/drive.readonly"],
     )
     return build("drive", "v3", credentials=creds)
-
-# --- FUNCIÓN PARA DESCARGAR Y CARGAR CSV DESDE GOOGLE DRIVE ------------------------------------------------------------------------------------------------
+#============================================================================================================================
+# --- FUNCIÓN PARA DESCARGAR Y CARGAR CSV DESDE GOOGLE DRIVE ----------------------------------------------------------------
+#============================================================================================================================
 @st.cache_data(ttl=300)  # Caché de 5 minutos
 def cargar_csv_desde_drive(file_name):
     """Busca y descarga un archivo CSV desde Google Drive en memoria."""
@@ -131,11 +136,13 @@ def cargar_csv_desde_drive(file_name):
             return None
 
     return df
-
-# --- PANEL PRINCIPAL ---------------------------------------------------------------------------------------------------
+#============================================================================================================================
+# --- PANEL PRINCIPAL -------------------------------------------------------------------------------------------------------
+#============================================================================================================================
 st.title("🌐 Panel de Control - Operaciones, Calidad y NPS")
-
-#--- CARGA DE DATOS ------------------------------------------------------------------------------------------------
+#============================================================================================================================
+#--- CARGA DE DATOS ---------------------------------------------------------------------------------------------------------
+#============================================================================================================================
 ORDENES = "ordenes.csv"
 #CALIDAD = 
 #NPS = 
@@ -143,8 +150,9 @@ ORDENES = "ordenes.csv"
 
 df_orden = cargar_csv_desde_drive(ORDENES)
 df_copy = df_orden.copy()
-
-# --- RENOMBRAR COLUMNAS ------------------------------------------------------------------------------------------------
+#============================================================================================================================
+# --- RENOMBRAR COLUMNAS ----------------------------------------------------------------------------------------------------
+#============================================================================================================================
 columnas_orden = {
     'Appointment Number': 'Cita',
     'ID Técnico Telecom': 'Tecnico',
@@ -162,8 +170,9 @@ columnas_orden = {
 }
 # Pandas ignora automáticamente las columnas que no existen en el DataFrame
 df_orden = df_orden.rename(columns=columnas_orden)
-
-# --- NORMALIZACION DE COLUMNAS ----------------------------------------------------------------------------------------------------
+#============================================================================================================================
+# --- NORMALIZACION DE COLUMNAS ---------------------------------------------------------------------------------------------
+#============================================================================================================================
 # 1. Aplicamos rsplit desde la derecha, limitando a 2 cortes
 # expand=True convierte el resultado en nuevas columnas independientes
 columna_direccion = df_orden['Direccion'].str.rsplit(',', n=2, expand=True)
@@ -218,13 +227,13 @@ mapeo_localidades = {
 df_orden['Localidad'] = df_orden['Localidad'].replace(mapeo_localidades)
 
 # Normalizacion de Fecha de Cita
-# 1. Convertir 'Last Modified Date' indicando que el formato es mes/día/año (MM/DD/YYYY)
+# Convvierte 'Fecha Cita' indicando que el formato es mes/día/año (MM/DD/YYYY)
 df_orden['Fecha Cita'] = pd.to_datetime(df_orden['Fecha Cita'],dayfirst=False,errors='coerce')
-# 2. Si quieres mostrarla visualmente como DD/MM/YYYY en las tablas de Streamlit:
-#df_orden['Fecha Cita'] = df_orden['Fecha Cita'].dt.strftime('%d/%m/%Y')
-#df_orden['Fecha Cita'] = df_orden['Fecha Cita'].dt.strftime('%d-%m-%Y')
+# Esta linea omite la hora:
 df_orden['Fecha Cita'] = pd.to_datetime(df_orden['Fecha Cita']).dt.date
-# --- SELECCION DE COLUMNAS A MOSTRAR ------------------------------------------------------------------------------------------------
+#============================================================================================================================
+# --- SELECCION DE COLUMNAS A MOSTRAR ---------------------------------------------------------------------------------------
+#============================================================================================================================
 columnas_seleccionadas = [
     'Cita',
     'Work Order',
@@ -242,19 +251,19 @@ columnas_seleccionadas = [
 columnas_existentes = [col for col in columnas_seleccionadas if col in df_orden.columns]
 
 df_normalizado = df_orden[columnas_existentes]
-
-# --- NAVEGACIÓN POR SECCIONES Y SUBSECCIONES -------------------------------------------------------------------------
+#============================================================================================================================
+# --- NAVEGACIÓN POR SECCIONES Y SUBSECCIONES -------------------------------------------------------------------------------
+#============================================================================================================================
 st.sidebar.title("📌 Menú de Navegación")
 seccion_principal = st.sidebar.pills(
     "Selecciona una Sección",
     ["📋 Órdenes", "📈 Calidad", "📊 NPS"]
 )
-
 st.markdown("---")
 
-# =====================================================================================================================
+#============================================================================================================================
 # --- SECCIÓN 1: ÓRDENES ---
-# =====================================================================================================================
+#============================================================================================================================
 if seccion_principal == "📋 Órdenes":
     st.title("💾 Carga de Ordenes de Trabajo")  
     st.header("📋 Sección: Órdenes (Operación y Logística)")
@@ -298,6 +307,7 @@ if seccion_principal == "📋 Órdenes":
         search_cliente = st.text_input("Buscar por Cliente")
         
     # --- APLICAR FILTROS --- 
+    
     if search_dir and 'Direccion' in df_normalizado.columns:
         df_normalizado = df_normalizado[df_normalizado['Direccion'].astype(str).str.contains(search_dir, case=False, na=False)]
         
@@ -318,43 +328,30 @@ if seccion_principal == "📋 Órdenes":
 
     
   # Creamos las pestañas para las subsecciones
-    tab_volumen, tab_duracion, tab_geo, tab_datos = st.tabs([
+    tab_volumen, tab_analisis, tab_geo, tab_monitoreo = st.tabs([
       "📋 Ordenes de Trabajo",
       "📊 Análisis",
       "🗺️ Distribución Geográfica",
-      "📋 Datos Normalizados",
+      "📌 Monitoreo",
     ])
-    
-# --- MUESTRA DE DATOS EN PANTALLA ---------------------------------------------------------------------------------------------------
+#============================================================================================================================    
+# --- MUESTRA DE DATOS EN PANTALLA ------------------------------------------------------------------------------------------
+#============================================================================================================================
     with tab_volumen:
         st.subheader("Volumen de Órdenes por Fecha")
-        # Dataframe Normalizado
         if df_normalizado is not None:
             st.write(f"Total de órdenes cargadas: **{len(df_normalizado)}**")
-            # Obtener la fecha máxima (la más reciente) de ese grupo
-            #df_normalizado['Fecha Cita'] = pd.to_datetime(df_normalizado['Fecha Cita'], errors='coerce')
-            #ultima_actualizacion = df_normalizado['Fecha Cita'].max()
             st.write(f"La última fecha de actualización es: {df_normalizado['Fecha Cita'].max()}")
             # Muestra de los datos Normalizados
             st.dataframe(df_normalizado, use_container_width=True)
         else:
             st.info("No se pudieron cargar los datos del archivo especificado.")
         
-        # Data frame completo
+        # Data frame completo sin filtros
         st.write(f"Total de órdenes cargadas: **{len(df_copy)}**")
         st.dataframe(df_copy, use_container_width=True)
 
-
-
-
-#===================================================================================================    
-    #if 'Fecha Cita' in df_normalizado.columns:
-    #  conteo_fechas = (
-    #      df_normalizado['Fecha Cita'].dt.date.value_counts().sort_index()
-    #  )
-    #  st.line_chart(conteo_fechas)
-
-    with tab_duracion:
+    with tab_analisis:
         st.subheader("Duración de los Trabajos")
         st.info(
             "Aquí puedes mostrar métricas de tiempos promedio por tipo de trabajo."
@@ -364,9 +361,9 @@ if seccion_principal == "📋 Órdenes":
         st.subheader("Distribución Geográfica")
         st.info("Visualización por Localidad y Provincia.")
 
-
-    with tab_datos:
-        st.subheader("Listado General de Órdenes")
+    with tab_monitoreo:
+        st.subheader("Listado de Órdenes para Monitorear")
+        
 
 
 
