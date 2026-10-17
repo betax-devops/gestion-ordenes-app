@@ -311,7 +311,7 @@ if seccion_principal == "📋 Órdenes":
         df_normalizado = df_normalizado[df_normalizado['Estado'].astype(str).str.strip().str.upper() == str(search_estado).upper()]
         
     if search_tarea != "Todas" and 'Tipo de Tarea' in df_normalizado.columns:
-        df_normalizado = df_normalizado[df_normalizado['Tipo de Tarea'].astype(str).str.strip().str.upper() == str(search_tarea).upper()]
+        df_normalizado = df_normalizado[df_normalizado['Tipo de Trabajo'].astype(str).str.strip().str.upper() == str(search_tarea).upper()]
 
     if search_cliente and 'Cliente' in df_normalizado.columns:
         df_normalizado = df_normalizado[df_normalizado['Cliente'].astype(str).str.contains(search_cliente, case=False, na=False)]
