@@ -288,12 +288,12 @@ if seccion_principal == "📋 Órdenes":
         opciones_estado.insert(0, "Todas")
         search_estado = st.selectbox("Estado", opciones_estado)
     with c5:
-        opciones_tarea = (
+        opciones_trabajo = (
             df_normalizado['Tipo de Trabajo'].dropna().unique().tolist()
             )
-        opciones_tarea.sort()
-        opciones_tarea.insert(0, "Todas")
-        search_tarea = st.selectbox("Tipo de Trabajo", opciones_tarea)
+        opciones_trabajo.sort()
+        opciones_trabajo.insert(0, "Todas")
+        search_trabajo = st.selectbox("Tipo de Trabajo", opciones_trabajo)
     with c6:
         search_cliente = st.text_input("Buscar por Cliente")
         
@@ -310,8 +310,8 @@ if seccion_principal == "📋 Órdenes":
     if search_estado != "Todas" and 'Estado' in df_normalizado.columns:
         df_normalizado = df_normalizado[df_normalizado['Estado'].astype(str).str.strip().str.upper() == str(search_estado).upper()]
         
-    if search_tarea != "Todas" and 'Tipo de Tarea' in df_normalizado.columns:
-        df_normalizado = df_normalizado[df_normalizado['Tipo de Trabajo'].astype(str).str.strip().str.upper() == str(search_tarea).upper()]
+    if search_trabajo != "Todas" and 'Tipo de Tarea' in df_normalizado.columns:
+        df_normalizado = df_normalizado[df_normalizado['Tipo de Trabajo'].astype(str).str.strip().str.upper() == str(search_trabajo).upper()]
 
     if search_cliente and 'Cliente' in df_normalizado.columns:
         df_normalizado = df_normalizado[df_normalizado['Cliente'].astype(str).str.contains(search_cliente, case=False, na=False)]
