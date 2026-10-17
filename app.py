@@ -293,7 +293,7 @@ if seccion_principal == "📋 Órdenes":
             )
         opciones_tarea.sort()
         opciones_tarea.insert(0, "Todas")
-        searh_tarea = st.selectbox("Tipo de Trabajo", opciones_tarea)
+        search_tarea = st.selectbox("Tipo de Trabajo", opciones_tarea)
     with c6:
         search_cliente = st.text_input("Buscar por Cliente")
         
