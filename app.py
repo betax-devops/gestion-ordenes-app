@@ -332,7 +332,7 @@ if 'df_calidad' not in st.session_state:
 
 if 'df_nps' not in st.session_state:
     # Llamas a tu función de Excel para NPS
-    st.session_state['df_npsaltas'] = cargar_excel_desde_drive("npsaltas.xlsx")
+    st.session_state['df_npsaltas'] = cargar_excel_desde_drive("nps_altas.xlsx")
 
 
 # Aquí evalúas en qué sección estás parado
