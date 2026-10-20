@@ -428,14 +428,20 @@ if seccion_principal == "📋 Órdenes":
 
 elif seccion_principal == "📈 Calidad":
     st.header("Métricas de Calidad")
-    # Todo el código de calidad aquí...
+    st.write(f"Total de NPS: **{len(df_calidad)}**")
+    #st.write(f"La última fecha de actualización es: {df_normalizado['Fecha Cita'].max()}")
+    st.dataframe(df_calidad, use_container_width=True)
 
 
 elif seccion_principal == "📊 NPS":
     st.header("Análisis de NPS")
     # Todo el código de NPS aquí...
-    st.write(f"Total de NPS: **{len(df_npsaltas)}**")
+    st.write(f"Total de NPS Altas: **{len(df_npsaltas)}**")
+
     #st.write(f"La última fecha de actualización es: {df_normalizado['Fecha Cita'].max()}")
     st.dataframe(df_npsaltas, use_container_width=True)
+
+    st.write(f"Total de NPS Service: **{len(df_npsservice)}**")
+    st.dataframe(df_npsservice, use_container_width=True)
 
 
