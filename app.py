@@ -194,7 +194,7 @@ NPS_SERVICE = "nps_service.xlsx"
 df_orden = cargar_csv_desde_drive(ORDENES)
 df_npsaltas = cargar_excel_desde_drive(NPS_ALTAS)
 df_npsservice = cargar_excel_desde_drive(NPS_SERVICE)
-df_calidad = cargar_excel_desde_drive(CALIDAD)
+df_calidad = cargar_excel_desde_drive(CALIDAD, sheet_name="Reiterados y Garantias")
 df_copy = df_orden.copy()
 
 
