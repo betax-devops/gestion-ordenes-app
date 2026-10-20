@@ -323,16 +323,28 @@ st.markdown("---")
 # Esto asegura que los archivos solo se descarguen/carguen la primera vez 
 # o cuando el usuario decida recargar la app por completo.
 if 'df_orden' not in st.session_state:
-    # Llamas a tu función de CSV (ejemplo)
     st.session_state['df_orden'] = cargar_csv_desde_drive("ordenes.csv")
 
 if 'df_calidad' not in st.session_state:
-    # Llamas a tu función de Excel para calidad
     st.session_state['df_calidad'] = cargar_excel_desde_drive("calidad.xlsx", sheet_name="Reiterados y Garantias")
 
-if 'df_nps' not in st.session_state:
-    # Llamas a tu función de Excel para NPS
+if 'df_npsaltas' not in st.session_state:
     st.session_state['df_npsaltas'] = cargar_excel_desde_drive("nps_altas.xlsx")
+
+if 'df_npsservice' not in st.session_state:
+    st.session_state['df_npsservice'] = cargar_excel_desde_drive("nps_service.xlsx")
+
+# Asignación segura de variables
+if st.session_state['df_orden'] is not None:
+    df_orden = st.session_state['df_orden'].copy()
+    df_copy = df_orden.copy()
+else:
+    df_orden = pd.DataFrame()
+    df_copy = pd.DataFrame()
+
+df_calidad = st.session_state['df_calidad']
+df_npsaltas = st.session_state['df_npsaltas']
+df_npsservice = st.session_state['df_npsservice']
 
 
 # Aquí evalúas en qué sección estás parado
