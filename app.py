@@ -319,6 +319,21 @@ st.markdown("---")
 #============================================================================================================================    
 # --- MUESTRA DE DATOS EN PANTALLA ------------------------------------------------------------------------------------------
 #============================================================================================================================
+# CARGA GLOBAL ÚNICA USANDO st.session_state
+# Esto asegura que los archivos solo se descarguen/carguen la primera vez 
+# o cuando el usuario decida recargar la app por completo.
+if 'df_orden' not in st.session_state:
+    # Llamas a tu función de CSV (ejemplo)
+    st.session_state['df_orden'] = cargar_csv_desde_drive("Base CCP.csv")
+
+if 'df_calidad' not in st.session_state:
+    # Llamas a tu función de Excel para calidad
+    st.session_state['df_calidad'] = cargar_excel_desde_drive("calidad.xlsx", sheet_name="Reiterados y Garantias")
+
+if 'df_nps' not in st.session_state:
+    # Llamas a tu función de Excel para NPS
+    st.session_state['df_nps'] = cargar_excel_desde_drive("nps.xlsx")
+
 
 # Aquí evalúas en qué sección estás parado
 if seccion_principal == "📋 Órdenes":
@@ -330,6 +345,8 @@ if seccion_principal == "📋 Órdenes":
       "🗺️ Distribución Geográfica",
       "📌 Monitoreo",
     ])
+
+
     # --- SECCIÓN 1: ÓRDENES ---
     with tab_volumen:
         if seccion_principal == "📋 Órdenes":
