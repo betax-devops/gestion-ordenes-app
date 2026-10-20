@@ -187,14 +187,17 @@ st.title("🌐 Panel de Control - Operaciones, Calidad y NPS")
 #============================================================================================================================
 ORDENES = "ordenes.csv"
 #CALIDAD = 
-NPS = "nps.xlsx"
+NPS_ALTAS = "nps_altas.xlsx"
 
 
 df_orden = cargar_csv_desde_drive(ORDENES)
-df_nps = cargar_excel_desde_drive(NPS)
+df_npsaltas = cargar_excel_desde_drive(NPS_ALTAS)
+df_npsservice = cargar_excel_desde_drive(NPS_SERVICE)
 df_copy = df_orden.copy()
+
+
 #============================================================================================================================
-# --- RENOMBRAR COLUMNAS ----------------------------------------------------------------------------------------------------
+# --- NORMALIZACION DATAFRAME ORDENES----------------------------------------------------------------------------------------
 #============================================================================================================================
 columnas_orden = {
     'Appointment Number': 'Cita',
@@ -292,8 +295,15 @@ columnas_seleccionadas = [
 ]
 
 columnas_existentes = [col for col in columnas_seleccionadas if col in df_orden.columns]
-
 df_normalizado = df_orden[columnas_existentes]
+
+#============================================================================================================================
+# --- NORMALIZACION DATAFRAME ORDENES----------------------------------------------------------------------------------------
+#============================================================================================================================
+columnas_npsaltas = 
+
+
+
 #============================================================================================================================
 # --- NAVEGACIÓN POR SECCIONES Y SUBSECCIONES -------------------------------------------------------------------------------
 #============================================================================================================================
@@ -422,8 +432,8 @@ elif seccion_principal == "📈 Calidad":
 elif seccion_principal == "📊 NPS":
     st.header("Análisis de NPS")
     # Todo el código de NPS aquí...
-    st.write(f"Total de NPS: **{len(df_nps)}**")
+    st.write(f"Total de NPS: **{len(df_npsaltas)}**")
     #st.write(f"La última fecha de actualización es: {df_normalizado['Fecha Cita'].max()}")
-    st.dataframe(df_nps, use_container_width=True)
+    st.dataframe(df_npsaltas, use_container_width=True)
 
 
