@@ -339,7 +339,8 @@ if seccion_principal == "📋 Órdenes":
         
             if search_cliente and 'Cliente' in df_normalizado.columns:
                 df_normalizado = df_normalizado[df_normalizado['Cliente'].astype(str).str.contains(search_cliente, case=False, na=False)]
-    
+
+            # --- MUESTRA DEL DATAFRAME ---
             st.subheader("Volumen de Órdenes por Fecha")
             if df_normalizado is not None:
                 st.write(f"Total de órdenes cargadas: **{len(df_normalizado)}**")
@@ -375,8 +376,12 @@ elif seccion_principal == "📈 Calidad":
     st.header("Métricas de Calidad")
     # Todo el código de calidad aquí...
 
+
 elif seccion_principal == "📊 NPS":
     st.header("Análisis de NPS")
     # Todo el código de NPS aquí...
+    st.write(f"Total de NPS: **{len(df_nps)}**")
+    #st.write(f"La última fecha de actualización es: {df_normalizado['Fecha Cita'].max()}")
+    st.dataframe(df_nps, use_container_width=True)
 
 
