@@ -428,7 +428,7 @@ if seccion_principal == "📋 Órdenes":
 
 elif seccion_principal == "📈 Calidad":
     st.header("Métricas de Calidad")
-    st.write(f"Total de NPS: **{len(df_calidad)}**")
+    st.write(f"Total de Ordenes por Calidad: **{len(df_calidad)}**")
     #st.write(f"La última fecha de actualización es: {df_normalizado['Fecha Cita'].max()}")
     st.dataframe(df_calidad, use_container_width=True)
 
