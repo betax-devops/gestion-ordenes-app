@@ -371,12 +371,12 @@ if seccion_principal == "📋 Órdenes":
 
 
 
-    elif seccion_principal == "📈 Calidad":
-        st.header("Métricas de Calidad")
-        # Todo el código de calidad aquí...
-    
-    elif seccion_principal == "📊 NPS":
-        st.header("Análisis de NPS")
-        # Todo el código de NPS aquí...
+elif seccion_principal == "📈 Calidad":
+    st.header("Métricas de Calidad")
+    # Todo el código de calidad aquí...
+
+elif seccion_principal == "📊 NPS":
+    st.header("Análisis de NPS")
+    # Todo el código de NPS aquí...
 
 
