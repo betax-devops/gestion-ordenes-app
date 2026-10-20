@@ -62,7 +62,7 @@ def obtener_servicio_drive():
     )
     return build("drive", "v3", credentials=creds)
 #============================================================================================================================
-# --- FUNCIÓN PARA DESCARGAR Y CARGAR CSV DESDE GOOGLE DRIVE ----------------------------------------------------------------
+# --- FUNCIÓN PARA DESCARGAR Y CARGAR CSV-EXCEL DESDE GOOGLE DRIVE ----------------------------------------------------------------
 #============================================================================================================================
 @st.cache_data(ttl=300)  # Caché de 5 minutos
 def cargar_csv_desde_drive(file_name):
@@ -136,6 +136,48 @@ def cargar_csv_desde_drive(file_name):
             return None
 
     return df
+
+@st.cache_data(ttl=300)  # Caché de 5 minutos
+def cargar_excel_desde_drive(file_name, sheet_name=0):
+    """Busca y descarga un archivo Excel (.xlsx / .xls) desde Google Drive en memoria."""
+    service = obtener_servicio_drive()
+
+    # 1. Buscar archivo por nombre
+    try:
+        results = service.files().list(
+            q=f"name = '{file_name}' and trashed = false",
+            fields="files(id, name)"
+        ).execute()
+    except Exception as e:
+        st.error(f"Error al conectar con Google Drive: {e}")
+        return None
+
+    items = results.get('files', [])
+
+    if not items:
+        st.warning(f"No se encontró el archivo '{file_name}' en Google Drive.")
+        return None
+
+    file_id = items[0]['id']
+
+    # 2. Descargar contenido en memoria
+    request = service.files().get_media(fileId=file_id)
+    fh = io.BytesIO()
+    downloader = MediaIoBaseDownload(fh, request)
+    done = False
+    
+    while not done:
+        _, done = downloader.next_chunk()
+        
+    fh.seek(0)
+
+    # 3. Parsear Excel usando pandas
+    try:
+        df = pd.read_excel(fh, sheet_name=sheet_name, engine='openpyxl')
+        return df
+    except Exception as e:
+        st.error(f"Error al leer el archivo Excel '{file_name}': {e}")
+        return None
 #============================================================================================================================
 # --- PANEL PRINCIPAL -------------------------------------------------------------------------------------------------------
 #============================================================================================================================
@@ -149,7 +191,7 @@ NPS = "nps.xlsx"
 
 
 df_orden = cargar_csv_desde_drive(ORDENES)
-df_nps = cargar_csv_desde_drive(NPS)
+df_nps = cargar_excel_desde_drive(NPS)
 df_copy = df_orden.copy()
 #============================================================================================================================
 # --- RENOMBRAR COLUMNAS ----------------------------------------------------------------------------------------------------
