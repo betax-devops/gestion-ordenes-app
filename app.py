@@ -262,13 +262,6 @@ seccion_principal = st.sidebar.pills(
 )
 st.markdown("---")
 
-# Creamos las pestañas para las subsecciones
-tab_volumen, tab_analisis, tab_geo, tab_monitoreo = st.tabs([
-  "📋 Ordenes de Trabajo",
-  "📊 Análisis",
-  "🗺️ Distribución Geográfica",
-  "📌 Monitoreo",
-])
 #============================================================================================================================    
 # --- MUESTRA DE DATOS EN PANTALLA ------------------------------------------------------------------------------------------
 #============================================================================================================================
@@ -276,7 +269,13 @@ tab_volumen, tab_analisis, tab_geo, tab_monitoreo = st.tabs([
 # Aquí evalúas en qué sección estás parado
 if seccion_principal == "📋 Órdenes":
     st.header("Gestión de Órdenes")
-    # Todo el código y tablas de órdenes aquí...
+    # Creamos las pestañas para las subsecciones
+    tab_volumen, tab_analisis, tab_geo, tab_monitoreo = st.tabs([
+      "📋 Ordenes de Trabajo",
+      "📊 Análisis",
+      "🗺️ Distribución Geográfica",
+      "📌 Monitoreo",
+    ])
     # --- SECCIÓN 1: ÓRDENES ---
     with tab_volumen:
         if seccion_principal == "📋 Órdenes":
@@ -372,13 +371,12 @@ if seccion_principal == "📋 Órdenes":
 
 
 
-
-elif seccion_principal == "📈 Calidad":
-    st.header("Métricas de Calidad")
-    # Todo el código de calidad aquí...
-
-elif seccion_principal == "📊 NPS":
-    st.header("Análisis de NPS")
-    # Todo el código de NPS aquí...
+    elif seccion_principal == "📈 Calidad":
+        st.header("Métricas de Calidad")
+        # Todo el código de calidad aquí...
+    
+    elif seccion_principal == "📊 NPS":
+        st.header("Análisis de NPS")
+        # Todo el código de NPS aquí...
 
 
