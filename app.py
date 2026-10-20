@@ -324,7 +324,7 @@ st.markdown("---")
 # o cuando el usuario decida recargar la app por completo.
 if 'df_orden' not in st.session_state:
     # Llamas a tu función de CSV (ejemplo)
-    st.session_state['df_orden'] = cargar_csv_desde_drive("Base CCP.csv")
+    st.session_state['df_orden'] = cargar_csv_desde_drive("ordenes.csv")
 
 if 'df_calidad' not in st.session_state:
     # Llamas a tu función de Excel para calidad
@@ -332,7 +332,7 @@ if 'df_calidad' not in st.session_state:
 
 if 'df_nps' not in st.session_state:
     # Llamas a tu función de Excel para NPS
-    st.session_state['df_nps'] = cargar_excel_desde_drive("nps.xlsx")
+    st.session_state['df_npsaltas'] = cargar_excel_desde_drive("npsaltas.xlsx")
 
 
 # Aquí evalúas en qué sección estás parado
