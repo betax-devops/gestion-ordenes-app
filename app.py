@@ -183,20 +183,30 @@ def cargar_excel_desde_drive(file_name, sheet_name=0):
 #============================================================================================================================
 st.title("🌐 Panel de Control - Operaciones, Calidad y NPS")
 #============================================================================================================================
-#--- CARGA DE DATOS ---------------------------------------------------------------------------------------------------------
+# --- CARGA DE DATOS (REPORTE ÚNICO) ----------------------------------------------------------------------------------------
 #============================================================================================================================
 REPORTE = "reportecompleto.xlsx"
-#CALIDAD = "calidad.xlsx"
-#NPS_ALTAS = "nps_altas.xlsx"
-#NPS_SERVICE = "nps_service.xlsx"
 
+# Carga global en el session_state para evitar descargas repetidas al cambiar de sección
+if 'df_orden' not in st.session_state:
+    st.session_state['df_orden'] = cargar_excel_desde_drive(REPORTE, sheet_name="ordenes")
 
-df_orden = cargar_excel_desde_drive(REPORTE, sheet_name = "ordenes")
-df_npsaltas = cargar_excel_desde_drive(REPORTE, sheet_name = "nps altas")
-df_npsservice = cargar_excel_desde_drive(REPORTE, sheet_name = "nps service")
-df_calidad = cargar_excel_desde_drive(REPORTE, sheet_name = "Reiterados y Garantias")
+if 'df_calidad' not in st.session_state:
+    st.session_state['df_calidad'] = cargar_excel_desde_drive(REPORTE, sheet_name="Reiterados y Garantias")
+
+if 'df_npsaltas' not in st.session_state:
+    st.session_state['df_npsaltas'] = cargar_excel_desde_drive(REPORTE, sheet_name="nps altas")
+
+if 'df_npsservice' not in st.session_state:
+    st.session_state['df_npsservice'] = cargar_excel_desde_drive(REPORTE, sheet_name="nps service")
+
+# Asignación segura a variables locales de trabajo
+df_orden = st.session_state['df_orden'].copy() if st.session_state['df_orden'] is not None else pd.DataFrame()
 df_copy = df_orden.copy()
 
+df_calidad = st.session_state['df_calidad']
+df_npsaltas = st.session_state['df_npsaltas']
+df_npsservice = st.session_state['df_npsservice']
 
 #============================================================================================================================
 # --- NORMALIZACION DATAFRAME ORDENES----------------------------------------------------------------------------------------
