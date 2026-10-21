@@ -191,7 +191,7 @@ REPORTE = "reportecompleto.csv"
 #NPS_SERVICE = "nps_service.xlsx"
 
 
-df_orden = cargar_csv_desde_drive(REPORTE, sheet_name = "ordenes")
+df_orden = cargar_excel_desde_drive(REPORTE, sheet_name = "ordenes")
 df_npsaltas = cargar_excel_desde_drive(REPORTE, sheet_name = "nps altas")
 df_npsservice = cargar_excel_desde_drive(REPORTE, sheet_name = "nps service")
 df_calidad = cargar_excel_desde_drive(REPORTE, sheet_name = "Reiterados y Garantias")
