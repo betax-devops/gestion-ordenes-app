@@ -185,16 +185,16 @@ st.title("🌐 Panel de Control - Operaciones, Calidad y NPS")
 #============================================================================================================================
 #--- CARGA DE DATOS ---------------------------------------------------------------------------------------------------------
 #============================================================================================================================
-ORDENES = "ordenes.csv"
-CALIDAD = "calidad.xlsx"
-NPS_ALTAS = "nps_altas.xlsx"
-NPS_SERVICE = "nps_service.xlsx"
+REPORTE = "reportecompleto.csv"
+#CALIDAD = "calidad.xlsx"
+#NPS_ALTAS = "nps_altas.xlsx"
+#NPS_SERVICE = "nps_service.xlsx"
 
 
-df_orden = cargar_csv_desde_drive(ORDENES)
-df_npsaltas = cargar_excel_desde_drive(NPS_ALTAS)
-df_npsservice = cargar_excel_desde_drive(NPS_SERVICE)
-df_calidad = cargar_excel_desde_drive(CALIDAD, sheet_name="Reiterados y Garantias")
+df_orden = cargar_csv_desde_drive(REPORTE, sheet_name = "ordenes")
+df_npsaltas = cargar_excel_desde_drive(REPORTE, sheet_name = "nps altas")
+df_npsservice = cargar_excel_desde_drive(REPORTE, sheet_name = "nps service")
+df_calidad = cargar_excel_desde_drive(REPORTE, sheet_name = "Reiterados y Garantias")
 df_copy = df_orden.copy()
 
 
