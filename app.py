@@ -92,16 +92,16 @@ def cargar_csv_desde_drive(file_name):
     fh = io.BytesIO()
     downloader = MediaIoBaseDownload(fh, request)
     done = False
-    
+
     while not done:
         _, done = downloader.next_chunk()
-        
+
     fh.seek(0)
 
     # 3. Parsear CSV probando combinaciones de encoding y delimitadores
     encodings = ['utf-8', 'utf-8-sig', 'latin1', 'cp1252']
     separators = [';', ',', '\t']
-    
+
     df = None
 
     for enc in encodings:
@@ -115,7 +115,7 @@ def cargar_csv_desde_drive(file_name):
                     on_bad_lines='skip', 
                     engine='python'
                 )
-                
+
                 if len(df_temp.columns) >= 1:
                     if len(df_temp.columns) > 1:
                         df = df_temp
@@ -165,10 +165,10 @@ def cargar_excel_desde_drive(file_name, sheet_name=0):
     fh = io.BytesIO()
     downloader = MediaIoBaseDownload(fh, request)
     done = False
-    
+
     while not done:
         _, done = downloader.next_chunk()
-        
+
     fh.seek(0)
 
     # 3. Parsear Excel usando pandas
@@ -183,30 +183,20 @@ def cargar_excel_desde_drive(file_name, sheet_name=0):
 #============================================================================================================================
 st.title("🌐 Panel de Control - Operaciones, Calidad y NPS")
 #============================================================================================================================
-# --- CARGA DE DATOS (REPORTE ÚNICO) ----------------------------------------------------------------------------------------
+#--- CARGA DE DATOS ---------------------------------------------------------------------------------------------------------
 #============================================================================================================================
-REPORTE = "reportecompleto.xlsx"
+ORDENES = "ordenes.csv"
+CALIDAD = "calidad.xlsx"
+NPS_ALTAS = "nps_altas.xlsx"
+NPS_SERVICE = "nps_service.xlsx"
 
-# Carga global en el session_state para evitar descargas repetidas al cambiar de sección
-if 'df_orden' not in st.session_state:
-    st.session_state['df_orden'] = cargar_excel_desde_drive(REPORTE, sheet_name="ordenes")
 
-if 'df_calidad' not in st.session_state:
-    st.session_state['df_calidad'] = cargar_excel_desde_drive(REPORTE, sheet_name="Reiterados y Garantias")
-
-if 'df_npsaltas' not in st.session_state:
-    st.session_state['df_npsaltas'] = cargar_excel_desde_drive(REPORTE, sheet_name="nps altas")
-
-if 'df_npsservice' not in st.session_state:
-    st.session_state['df_npsservice'] = cargar_excel_desde_drive(REPORTE, sheet_name="nps service")
-
-# Asignación segura a variables locales de trabajo
-df_orden = st.session_state['df_orden'].copy() if st.session_state['df_orden'] is not None else pd.DataFrame()
+df_orden = cargar_csv_desde_drive(ORDENES)
+df_npsaltas = cargar_excel_desde_drive(NPS_ALTAS)
+df_npsservice = cargar_excel_desde_drive(NPS_SERVICE)
+df_calidad = cargar_excel_desde_drive(CALIDAD)
 df_copy = df_orden.copy()
 
-df_calidad = st.session_state['df_calidad']
-df_npsaltas = st.session_state['df_npsaltas']
-df_npsservice = st.session_state['df_npsservice']
 
 #============================================================================================================================
 # --- NORMALIZACION DATAFRAME ORDENES----------------------------------------------------------------------------------------
@@ -329,33 +319,6 @@ st.markdown("---")
 #============================================================================================================================    
 # --- MUESTRA DE DATOS EN PANTALLA ------------------------------------------------------------------------------------------
 #============================================================================================================================
-# CARGA GLOBAL ÚNICA USANDO st.session_state
-# Esto asegura que los archivos solo se descarguen/carguen la primera vez 
-# o cuando el usuario decida recargar la app por completo.
-if 'df_orden' not in st.session_state:
-    st.session_state['df_orden'] = cargar_csv_desde_drive("ordenes.csv")
-
-if 'df_calidad' not in st.session_state:
-    st.session_state['df_calidad'] = cargar_excel_desde_drive("calidad.xlsx", sheet_name="Reiterados y Garantias")
-
-if 'df_npsaltas' not in st.session_state:
-    st.session_state['df_npsaltas'] = cargar_excel_desde_drive("nps_altas.xlsx")
-
-if 'df_npsservice' not in st.session_state:
-    st.session_state['df_npsservice'] = cargar_excel_desde_drive("nps_service.xlsx")
-
-# Asignación segura de variables
-if st.session_state['df_orden'] is not None:
-    df_orden = st.session_state['df_orden'].copy()
-    df_copy = df_orden.copy()
-else:
-    df_orden = pd.DataFrame()
-    df_copy = pd.DataFrame()
-
-df_calidad = st.session_state['df_calidad']
-df_npsaltas = st.session_state['df_npsaltas']
-df_npsservice = st.session_state['df_npsservice']
-
 
 # Aquí evalúas en qué sección estás parado
 if seccion_principal == "📋 Órdenes":
@@ -367,18 +330,16 @@ if seccion_principal == "📋 Órdenes":
       "🗺️ Distribución Geográfica",
       "📌 Monitoreo",
     ])
-
-
     # --- SECCIÓN 1: ÓRDENES ---
     with tab_volumen:
         if seccion_principal == "📋 Órdenes":
             st.title("💾 Carga de Ordenes de Trabajo")  
             st.header("📋 Sección: Órdenes (Operación y Logística)")
-        
+
             # --- SECCIÓN DE BÚSQUEDA ---
             st.subheader("🔍 Buscador Integrado")
             c1, c2, c3, c4, c5, c6 = st.columns(6)
-        
+
             with c1:
                 search_dir = st.text_input("Buscar por Dirección")
             with c2:
@@ -412,24 +373,24 @@ if seccion_principal == "📋 Órdenes":
                 search_trabajo = st.selectbox("Tipo de Trabajo", opciones_trabajo)
             with c6:
                 search_cliente = st.text_input("Buscar por Cliente")
-                
+
             # --- APLICAR FILTROS --- 
-            
+
             if search_dir and 'Direccion' in df_normalizado.columns:
                 df_normalizado = df_normalizado[df_normalizado['Direccion'].astype(str).str.contains(search_dir, case=False, na=False)]
-                
+
             if search_localidad != "Todas" and 'Localidad' in df_normalizado.columns:
                 df_normalizado = df_normalizado[df_normalizado['Localidad'].astype(str).str.strip().str.upper() == str(search_localidad).upper()]
-        
+
             if search_territorio != "Todas" and 'Territorio' in df_normalizado.columns:
                 df_normalizado = df_normalizado[df_normalizado['Territorio'].astype(str).str.strip().str.upper() == str(search_territorio).upper()]
-                
+
             if search_estado != "Todas" and 'Estado' in df_normalizado.columns:
                 df_normalizado = df_normalizado[df_normalizado['Estado'].astype(str).str.strip().str.upper() == str(search_estado).upper()]
-                
+
             if search_trabajo != "Todas" and 'Tipo de Trabajo' in df_normalizado.columns:
                 df_normalizado = df_normalizado[df_normalizado['Tipo de Trabajo'].astype(str).str.strip().str.upper() == str(search_trabajo).upper()]
-        
+
             if search_cliente and 'Cliente' in df_normalizado.columns:
                 df_normalizado = df_normalizado[df_normalizado['Cliente'].astype(str).str.contains(search_cliente, case=False, na=False)]
 
@@ -442,24 +403,24 @@ if seccion_principal == "📋 Órdenes":
                 st.dataframe(df_normalizado, use_container_width=True)
             else:
                 st.info("No se pudieron cargar los datos del archivo especificado.")
-            
+
             # Data frame completo sin filtros
             st.write(f"Total de órdenes cargadas: **{len(df_copy)}**")
             st.dataframe(df_copy, use_container_width=True)
-            
+
     with tab_analisis:
         st.subheader("Duración de los Trabajos")
         st.info(
             "Aquí puedes mostrar métricas de tiempos promedio por tipo de trabajo."
         )
-    
+
     with tab_geo:
         st.subheader("Distribución Geográfica")
         st.info("Visualización por Localidad y Provincia.")
-    
+
     with tab_monitoreo:
         st.subheader("Listado de Órdenes para Monitorear")
-        
+
 
 
 
@@ -467,20 +428,8 @@ if seccion_principal == "📋 Órdenes":
 
 elif seccion_principal == "📈 Calidad":
     st.header("Métricas de Calidad")
+    st.write(f"Total de NPS: **{len(df_calidad)}**")
     st.write(f"Total de Ordenes por Calidad: **{len(df_calidad)}**")
     #st.write(f"La última fecha de actualización es: {df_normalizado['Fecha Cita'].max()}")
     st.dataframe(df_calidad, use_container_width=True)
-
-
-elif seccion_principal == "📊 NPS":
-    st.header("Análisis de NPS")
-    # Todo el código de NPS aquí...
-    st.write(f"Total de NPS Altas: **{len(df_npsaltas)}**")
-
-    #st.write(f"La última fecha de actualización es: {df_normalizado['Fecha Cita'].max()}")
-    st.dataframe(df_npsaltas, use_container_width=True)
-
-    st.write(f"Total de NPS Service: **{len(df_npsservice)}**")
-    st.dataframe(df_npsservice, use_container_width=True)
-
 
