@@ -190,13 +190,10 @@ CALIDAD = "calidad.xlsx"
 NPS_ALTAS = "nps_altas.xlsx"
 NPS_SERVICE = "nps_service.xlsx"
 
-
 df_orden = cargar_csv_desde_drive(ORDENES)
 df_npsaltas = cargar_excel_desde_drive(NPS_ALTAS)
 df_npsservice = cargar_excel_desde_drive(NPS_SERVICE)
 df_calidad = cargar_excel_desde_drive(CALIDAD)
-df_copy = df_orden.copy()
-
 
 #============================================================================================================================
 # --- NORMALIZACION DATAFRAME ORDENES----------------------------------------------------------------------------------------
@@ -422,14 +419,18 @@ if seccion_principal == "📋 Órdenes":
         st.subheader("Listado de Órdenes para Monitorear")
 
 
-
-
-
-
 elif seccion_principal == "📈 Calidad":
     st.header("Métricas de Calidad")
-    st.write(f"Total de NPS: **{len(df_calidad)}**")
     st.write(f"Total de Ordenes por Calidad: **{len(df_calidad)}**")
     #st.write(f"La última fecha de actualización es: {df_normalizado['Fecha Cita'].max()}")
     st.dataframe(df_calidad, use_container_width=True)
+
+
+elif seccion_principal == "📊 NPS":
+    st.header("Métricas de NPS de ALtas y Service")
+    st.write(f"Total de NPS de Altas: **{len(df_npsaltas)}**")
+    st.write(f"Total de NPS de Service: **{len(df_npsservice)}**")
+    #st.write(f"La última fecha de actualización es: {df_normalizado['Fecha Cita'].max()}")
+    st.dataframe(df_npsaltas, use_container_width=True)
+    st.dataframe(df_npsservice, use_container_width=True)
 
