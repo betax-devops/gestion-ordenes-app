@@ -194,6 +194,7 @@ df_orden = cargar_csv_desde_drive(ORDENES)
 df_npsaltas = cargar_excel_desde_drive(NPS_ALTAS)
 df_npsservice = cargar_excel_desde_drive(NPS_SERVICE)
 df_calidad = cargar_excel_desde_drive(CALIDAD)
+df_copy = df_orden.copy()
 
 #============================================================================================================================
 # --- NORMALIZACION DATAFRAME ORDENES----------------------------------------------------------------------------------------
