@@ -325,10 +325,10 @@ if seccion_principal == "📋 Órdenes":
     st.header("Gestión de Órdenes")
     # Creamos las pestañas para las subsecciones
     tab_volumen, tab_analisis, tab_geo, tab_monitoreo = st.tabs([
-      "📋 Ordenes de Trabajo",
-      "📊 Análisis",
-      "🗺️ Distribución Geográfica",
-      "📌 Monitoreo",
+        "📋 Ordenes de Trabajo",
+        "📊 Graficos",
+        "🗺️ Distribución Geográfica",
+        "📌 Monitoreo"
     ])
     # --- SECCIÓN 1: ÓRDENES ---
     with tab_volumen:
