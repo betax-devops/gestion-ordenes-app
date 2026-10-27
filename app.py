@@ -419,7 +419,70 @@ if seccion_principal == "📋 Órdenes":
         st.info("Visualización por Localidad y Provincia.")
 
     with tab_monitoreo:
-        st.subheader("Listado de Órdenes para Monitorear")
+        st.subheader("📌 Análisis de Tiempos entre Services Consecutivos")
+        st.info("Evalúa los días transcurridos entre un service **CERRADO** y el siguiente service para el **mismo cliente y misma dirección**.")
+
+        if df_normalizado.empty:
+            st.warning("No hay datos disponibles para el monitoreo.")
+        else:
+            # 1. Creamos una copia de trabajo para el análisis
+            df_mon = df_normalizado.copy()
+
+            # Asegurar que Fecha Cita sea de tipo datetime para poder restar días
+            df_mon['Fecha Cita'] = pd.to_datetime(df_mon['Fecha Cita'], errors='coerce')
+
+            # 2. Ordenar cronológicamente por Cliente, Dirección y Fecha
+            df_mon = df_mon.sort_values(by=['Cliente', 'Direccion', 'Fecha Cita']).reset_index(drop=True)
+
+            # 3. Desplazar los datos una fila hacia arriba para obtener el "siguiente service" del mismo bloque
+            df_mon['Siguiente_Fecha'] = df_mon['Fecha Cita'].shift(-1)
+            df_mon['Siguiente_Cliente'] = df_mon['Cliente'].shift(-1)
+            df_mon['Siguiente_Direccion'] = df_mon['Direccion'].shift(-1)
+
+            # 4. Definir las condiciones requeridas
+            # Condición A: El estado del primer service debe ser CERRADO
+            estado_limpio = df_mon['Estado'].astype(str).str.strip().str.upper()
+            mask_cerrado = (estado_limpio == 'CERRADO')
+
+            # Condición B: El cliente y la dirección deben ser exactamente iguales en ambos services
+            mask_mismo_cliente_dir = (
+                (df_mon['Cliente'] == df_mon['Siguiente_Cliente']) & 
+                (df_mon['Direccion'] == df_mon['Siguiente_Direccion'])
+            )
+
+            # Combinar ambas condiciones
+            mask_valida = mask_cerrado & mask_mismo_cliente_dir
+            df_analisis = df_mon[mask_valida].copy()
+
+            # 5. Calcular los días transcurridos entre el service 1 y el service siguiente
+            df_analisis['Dias_Transcurridos'] = (df_analisis['Siguiente_Fecha'] - df_analisis['Fecha Cita']).dt.days
+
+            # 6. Formatear las fechas nuevamente a texto limpio (DD-MM-YYYY) para mostrar en pantalla
+            df_analisis['Fecha Cita (Cerrado)'] = df_analisis['Fecha Cita'].dt.strftime('%d-%m-%Y')
+            df_analisis['Siguiente Fecha'] = df_analisis['Siguiente_Fecha'].dt.strftime('%d-%m-%Y')
+
+            # Seleccionar columnas clave para el reporte final
+            columnas_mostrar = [
+                'Cliente', 'Direccion', 'Cita', 'Estado', 
+                'Fecha Cita (Cerrado)', 'Siguiente Fecha', 'Dias_Transcurridos', 'Tecnico'
+            ]
+            
+            cols_existentes = [c for c in columnas_mostrar if c in df_analisis.columns]
+            df_reporte = df_analisis[cols_existentes]
+
+            # 7. Mostrar resultados y métricas en Streamlit
+            if not df_reporte.empty:
+                col_m1, col_m2 = st.columns(2)
+                with col_m1:
+                    st.metric("Total de casos detectados (Reincidencias)", len(df_reporte))
+                with col_m2:
+                    promedio_dias = df_reporte['Dias_Transcurridos'].mean()
+                    st.metric("Promedio de días entre services", f"{promedio_dias:.1f} días")
+
+                st.markdown("---")
+                st.dataframe(df_reporte, use_container_width=True)
+            else:
+                st.info("No se encontraron registros consecutivos que cumplan con las condiciones (Service Cerrado seguido de otro service para el mismo cliente y dirección).")
 
 
 elif seccion_principal == "📈 Calidad":
