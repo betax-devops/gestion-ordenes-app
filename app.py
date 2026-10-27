@@ -442,7 +442,7 @@ if seccion_principal == "📋 Órdenes":
             # 4. Definir las condiciones requeridas
             # Condición A: El estado del primer service debe ser CERRADO
             estado_limpio = df_mon['Estado'].astype(str).str.strip().str.upper()
-            mask_cerrado = (estado_limpio == 'CERRADO')
+            mask_cerrado = (estado_limpio == 'Cerrada')
 
             # Condición B: El cliente y la dirección deben ser exactamente iguales en ambos services
             mask_mismo_cliente_dir = (
