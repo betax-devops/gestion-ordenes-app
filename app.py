@@ -25,7 +25,7 @@ def verificar_password():
     if st.session_state.autenticado:
         return True
 
-    st.subheader("🔒 Acceso Restringido - Base CCP")
+    st.subheader("🔒 Acceso Restringido 🔒")
 
     try:
         correct_password = st.secrets["APP_PASSWORD"]
@@ -203,7 +203,8 @@ columnas_orden = {
     'Appointment Number': 'Cita',
     'ID Técnico Telecom': 'Tecnico',
     'Address': 'Direccion',
-    'Status Category': 'Estado',
+    'Status Category': 'Categoria',
+    'Status': 'Estado'
     'Internal SLR Geolocation (Latitude)': 'Latitud',
     'Internal SLR Geolocation (Longitude)': 'Longitud',
     'Record Type': 'Tipo de Trabajo',
@@ -290,6 +291,7 @@ columnas_seleccionadas = [
     'Cliente',
     'Territorio',
     'Tecnico',
+    'Categoria',
     'Estado',
     'Fecha Cita'
 ]
