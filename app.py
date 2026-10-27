@@ -429,9 +429,9 @@ if seccion_principal == "📋 Órdenes":
         # Agrupamos el DataFrame original para contar cada tipo de orden por Cliente y Dirección
         # (Ajusta los textos dentro del .contains() según cómo figure exactamente en tu columna 'Tipo de Trabajo')
         df_metricas = df_normalizado.groupby(['Cliente', 'Direccion']).agg(
-            cantidad_service=('Tipo de Trabajo', lambda x: (x.astype(str).str.upper().str.contains('SERVICE')).sum()),
-            cantidad_altas=('Tipo de Trabajo', lambda x: (x.astype(str).str.upper().str.contains('ALTA')).sum()),
-            cantidad_desconexiones=('Tipo de Trabajo', lambda x: (x.astype(str).str.upper().str.contains('BAJA|DESCONEXION')).sum())
+            cantidad_service=('Tipo de Trabajo', lambda x: (x.astype(str).str.upper().str.contains('Service')).sum()),
+            cantidad_altas=('Tipo de Trabajo', lambda x: (x.astype(str).str.upper().str.contains('Alta')).sum()),
+            cantidad_desconexiones=('Tipo de Trabajo', lambda x: (x.astype(str).str.upper().str.contains('Desconexion')).sum())
         ).reset_index()
         st.write(f"Total de Clientes Unicos: **{len(df_clientes_unicos)}**")
         st.dataframe(df_clientes_unicos, use_container_width=True)
