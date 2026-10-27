@@ -422,7 +422,7 @@ if seccion_principal == "📋 Órdenes":
     with tab_monitoreo:
         st.subheader("📌 Análisis de Tiempos entre Intervenciones Consecutivos")
 
-        df_clientes_unicos = df_normalizado[['Cliente', 'Direccion']].drop_duplicates().reset_index(drop=True)
+        df_clientes_unicos = df_normalizado[['Cliente', 'Direccion', 'Localidad']].drop_duplicates().reset_index(drop=True)
         #columnas_unicos = [
         #    'Direccion',
         #    'Localidad',
@@ -431,6 +431,7 @@ if seccion_principal == "📋 Órdenes":
         #]
         #columnas_1 = [col for col in columnas_unicos if col in df_clientes_unicos.columns]
         #df_clientes_unicos = df_orden[columnas_1]
+        st.write(f"Total de Clientes Unicos: **{len(df_clientes_unicos)}**")
         st.dataframe(df_clientes_unicos, use_container_width=True)
 
         
