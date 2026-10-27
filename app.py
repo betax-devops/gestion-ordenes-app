@@ -204,7 +204,7 @@ columnas_orden = {
     'ID Técnico Telecom': 'Tecnico',
     'Address': 'Direccion',
     'Status Category': 'Categoria',
-    'Status': 'Estado'
+    'Status': 'Estado',
     'Internal SLR Geolocation (Latitude)': 'Latitud',
     'Internal SLR Geolocation (Longitude)': 'Longitud',
     'Record Type': 'Tipo de Trabajo',
