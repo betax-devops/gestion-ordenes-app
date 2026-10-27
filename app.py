@@ -425,17 +425,27 @@ if seccion_principal == "📋 Órdenes":
         st.subheader("📌 Análisis de Tiempos entre Intervenciones Consecutivos")
 
         df_clientes_unicos = df_normalizado[['Cliente', 'Direccion', 'Localidad']].drop_duplicates().reset_index(drop=True)
-        #columnas_unicos = [
-        #    'Direccion',
-        #    'Localidad',
-        #    'Cliente',
-        #    'Territorio',
-        #]
-        #columnas_1 = [col for col in columnas_unicos if col in df_clientes_unicos.columns]
-        #df_clientes_unicos = df_orden[columnas_1]
+
+        # Agrupamos el DataFrame original para contar cada tipo de orden por Cliente y Dirección
+        # (Ajusta los textos dentro del .contains() según cómo figure exactamente en tu columna 'Tipo de Trabajo')
+        df_metricas = df_normalizado.groupby(['Cliente', 'Direccion']).agg(
+            cantidad_service=('Tipo de Trabajo', lambda x: (x.astype(str).str.upper().str.contains('SERVICE')).sum()),
+            cantidad_altas=('Tipo de Trabajo', lambda x: (x.astype(str).str.upper().str.contains('ALTA')).sum()),
+            cantidad_desconexiones=('Tipo de Trabajo', lambda x: (x.astype(str).str.upper().str.contains('BAJA|DESCONEXION')).sum())
+        ).reset_index()
         st.write(f"Total de Clientes Unicos: **{len(df_clientes_unicos)}**")
         st.dataframe(df_clientes_unicos, use_container_width=True)
 
+        # Unimos las métricas calculadas a tu DataFrame de clientes únicos
+        df_clientes_unicos = pd.merge(
+            df_clientes_unicos,
+            df_metricas,
+            on=['Cliente', 'Direccion'],
+            how='left'
+        )
+
+        st.write(f"Total de Clientes Unicos: **{len(df_clientes_unicos)}**")
+        st.dataframe(df_clientes_unicos, use_container_width=True)
         
 
 elif seccion_principal == "📈 Calidad":
